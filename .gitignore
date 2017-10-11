@@ -1,0 +1,8 @@
+*.lock
+vendor/
+dist/
+bower_components/
+*.zip
+*.log
+cache/
+.DS_STORE

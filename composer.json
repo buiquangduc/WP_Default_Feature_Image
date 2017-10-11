@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-4": {
+            "DTFPT\\": "src/"
+        }
+    },
+    "require": {
+        "vietartisans/templater": "^1.1"
+    }
+}
