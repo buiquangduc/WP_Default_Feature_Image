@@ -6,3 +6,4 @@ bower_components/
 *.log
 cache/
 .DS_STORE
+node_modules/
