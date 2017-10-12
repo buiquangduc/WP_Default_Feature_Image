@@ -5,7 +5,7 @@ namespace DTFPT\Traits;
 /**
  * Trait for single instance using in this plugin
  *
- * @author Duc Bui Quang
+ * @author Duc Bui Quang <ducbuiquangxd@gmail.com>
  * @since 1.0.0
  */
 

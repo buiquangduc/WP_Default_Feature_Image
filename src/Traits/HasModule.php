@@ -5,7 +5,7 @@ namespace DTFPT\Traits;
 /**
  * Trait for all classes which have sub-modules
  *
- * @author Viet Artisans
+ * @author Duc Bui Quang <ducbuiquangxd@gmail.com>
  * @since 1.0.0
  */
 
@@ -23,7 +23,7 @@ Trait HasModule
 	 * Load neccessary sub-modules for the this class.
 	 * 
 	 * @since 1.0.0
-	 * @return VATweets\Traits\HasModule
+	 * @return DTFPT\Traits\HasModule
 	 */
 	abstract public function loadModules();
 
