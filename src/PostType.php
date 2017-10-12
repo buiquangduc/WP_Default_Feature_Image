@@ -27,7 +27,7 @@ final class PostType
 	 * Get all Post Type names which support thumbnail feature
 	 *
 	 * @since 1.0.0
-	 * @return void
+	 * @return array
 	 */
 	public function get_name() {
 		$names = \get_post_types();
