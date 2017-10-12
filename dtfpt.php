@@ -19,6 +19,7 @@ require_once DTFPT_DIR_BASE . '/vendor/autoload.php';
 use DTFPT\Traits\HasModule;
 use DTFPT\Traits\Singleton;
 use DTFPT\PostType;
+use DTFPT\Taxonomy;
 
 final class DTFPT
 {
@@ -42,8 +43,9 @@ final class DTFPT
 	public function hooks() 
 	{
 		add_action('init', [$this, 'init'], 0);
-
+		
 		$this->moduleHooks();
+
 	}
 	
 	/**
@@ -63,7 +65,8 @@ final class DTFPT
 	public function loadModules() {
 		$modules = [
 			'templater'	=> new VA\Templater(DTFPT_TEMPLATES_PATH, 'blade'),
-			'post_type' => PostType::instance()
+			'post_type' => PostType::instance(),
+			'taxonomy'	=> Taxonomy::instance()
 		];
 			
 		foreach($modules as $moduleName => $moduleHandle) {
@@ -85,4 +88,4 @@ function dtfpt() {
 }
 
 // Kick it off
-add_action('plugins_loaded', [dtfpt(), 'hooks']);
+add_action('plugins_loaded', [dtfpt(), 'hooks'], 10);
