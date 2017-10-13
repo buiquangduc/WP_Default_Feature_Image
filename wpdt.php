@@ -6,22 +6,23 @@
  * Author: Duc Bui Quang <ducbuiquangxd@gmail.com>
  * Author URI: https://www.ducbuiquang.com
  * License: GNUv3
- * Text Domain: dtfpt
+ * Text Domain: wpdt
  */
 
-define('DTFPT_URL_BASE', plugin_dir_url(__FILE__) );
-define('DTFPT_DIR_BASE', plugin_dir_path( __FILE__ ) );
-define('DTFPT_ASSETS', DTFPT_URL_BASE . '/dist/' );
-define('DTFPT_TEMPLATES_PATH', DTFPT_DIR_BASE.  '/templates/');
+define('WPDT_URL_BASE', plugin_dir_url(__FILE__) );
+define('WPDT_DIR_BASE', plugin_dir_path( __FILE__ ) );
+define('WPDT_ASSETS', WPDT_URL_BASE . '/dist/' );
+define('WPDT_TEMPLATES_PATH', WPDT_DIR_BASE.  '/templates/');
 
-require_once DTFPT_DIR_BASE . '/vendor/autoload.php';
+require_once WPDT_DIR_BASE . '/vendor/autoload.php';
 
-use DTFPT\Traits\HasModule;
-use DTFPT\Traits\Singleton;
-use DTFPT\PostType;
-use DTFPT\Taxonomy;
+use WPDT\Traits\HasModule;
+use WPDT\Traits\Singleton;
+use WPDT\PostType;
+use WPDT\Taxonomy;
+use WPDT\Term;
 
-final class DTFPT
+final class WPDT
 {
 	use HasModule;
 	use Singleton;
@@ -43,7 +44,6 @@ final class DTFPT
 	public function hooks() 
 	{
 		add_action('init', [$this, 'init'], 0);
-		
 		$this->moduleHooks();
 
 	}
@@ -56,7 +56,7 @@ final class DTFPT
 	 */
 	public function init() 
 	{
-		load_plugin_textdomain('dtfpt', false, TWEETS_CAROUSEL_DIR_BASE . '/lang/');
+		load_plugin_textdomain('wpdt', false, TWEETS_CAROUSEL_DIR_BASE . '/lang/');
 	}
 	
 	/**
@@ -64,9 +64,10 @@ final class DTFPT
 	 */
 	public function loadModules() {
 		$modules = [
-			'templater'	=> new VA\Templater(DTFPT_TEMPLATES_PATH, 'blade'),
+			'templater'	=> new VA\Templater(WPDT_TEMPLATES_PATH, 'blade'),
 			'post_type' => PostType::instance(),
-			'taxonomy'	=> Taxonomy::instance()
+			'taxonomy'	=> Taxonomy::instance(),
+			'term'		=> Term::instance()
 		];
 			
 		foreach($modules as $moduleName => $moduleHandle) {
@@ -78,14 +79,14 @@ final class DTFPT
 	
 }
 /**
- * Return singleton of DTFPT
+ * Return singleton of WPDT
  *
  * @since  1.0.0
- * @return DTFPT  Singleton instance of plugin class.
+ * @return WPDT  Singleton instance of plugin class.
  */
-function dtfpt() {
-    return DTFPT::instance();
+function wpdt() {
+    return WPDT::instance();
 }
 
 // Kick it off
-add_action('plugins_loaded', [dtfpt(), 'hooks'], 10);
+add_action('plugins_loaded', [wpdt(), 'hooks'], 10);

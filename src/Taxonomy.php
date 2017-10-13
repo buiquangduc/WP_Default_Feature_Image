@@ -1,6 +1,6 @@
 <?php
 
-namespace DTFPT;
+namespace WPDT;
 
 /**
  * This class handle all actions related with taxonomy
@@ -9,7 +9,7 @@ namespace DTFPT;
  * @since 1.0.0
  */
 
-use DTFPT\Traits\Singleton;
+use WPDT\Traits\Singleton;
 
 final class Taxonomy
 {
