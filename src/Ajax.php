@@ -1,6 +1,6 @@
 <?php
 
-namespace WPDT;
+namespace WPDFI;
 
 /**
  * This class handle all ajax actions of this plugin
@@ -9,7 +9,7 @@ namespace WPDT;
  * @since 1.0.0
  */
 
-use WPDT\Traits\Singleton;
+use WPDFI\Traits\Singleton;
 
 final class Ajax
 {
@@ -33,8 +33,8 @@ final class Ajax
 		$actions = ['get_post_types', 'get_taxonomies', 'get_terms'];
 
 		foreach($actions as $action) {
-			\add_action('wp_ajax_wpdt_'. $action, [$this, $action]);
-			\add_action('wp_ajax_nopriv_wpdt'. $action, [$this, $action]);
+			\add_action('wp_ajax_wpdfi_'. $action, [$this, $action]);
+			\add_action('wp_ajax_nopriv_wpdfi'. $action, [$this, $action]);
 		}
 	}
 
@@ -45,7 +45,7 @@ final class Ajax
 	 * @return array
 	 */
 	public function get_post_types() {
-		echo json_encode(\wpdt()->post_type->get_name());
+		echo json_encode(\wpdfi()->post_type->get_name());
 		exit;
 	}
 
@@ -57,7 +57,7 @@ final class Ajax
 	 * @return array
 	 */
 	public function get_taxonomies() {
-		echo json_encode(\wpdt()->taxonomy->get('post'));
+		echo json_encode(\wpdfi()->taxonomy->get('post'));
 		exit;
 	}
 
@@ -68,7 +68,7 @@ final class Ajax
 	 * @return array
 	 */
 	public function get_terms() {
-		echo json_encode(\wpdt()->term->get('category'));
+		echo json_encode(\wpdfi()->term->get('category'));
 		exit;
 	}
 }

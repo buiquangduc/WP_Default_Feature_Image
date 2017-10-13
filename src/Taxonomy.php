@@ -1,6 +1,6 @@
 <?php
 
-namespace WPDT;
+namespace WPDFI;
 
 /**
  * This class handle all actions related with taxonomy
@@ -9,7 +9,7 @@ namespace WPDT;
  * @since 1.0.0
  */
 
-use WPDT\Traits\Singleton;
+use WPDFI\Traits\Singleton;
 
 final class Taxonomy
 {
