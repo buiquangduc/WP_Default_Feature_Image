@@ -1,6 +1,6 @@
 <?php
 
-namespace DTFPT;
+namespace WPDT;
 
 /**
  * This class handle all actions related with taxonomy
@@ -9,7 +9,7 @@ namespace DTFPT;
  * @since 1.0.0
  */
 
-use DTFPT\Traits\Singleton;
+use WPDT\Traits\Singleton;
 
 final class Taxonomy
 {
@@ -24,26 +24,26 @@ final class Taxonomy
 	}
 
 	/**
-	 * Get all taxonomy name by given post type name
+	 * Get all taxonomy name and label by given post type name
 	 *
 	 * @param string $post_type
 	 * @since 1.0.0
 	 * @return array
 	 */
-	public function get_name($post_type = 'post') {
-		$names = [];
+	public function get($post_type = 'post') {
+		$data = [];
 
 		if($post_type) {
 			
 			foreach(\get_object_taxonomies($post_type, 'objects') as $index => $taxonomy) {
 
-				$names[$index]['name'] = $taxonomy->name;
-				$names[$index]['label'] = $taxonomy->label;
+				$data[$index]['name'] = $taxonomy->name;
+				$data[$index]['label'] = $taxonomy->label;
 
 			}
 		
 		}
 
-		return $names;
+		return $data;
 	}
 }

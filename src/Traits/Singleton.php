@@ -1,6 +1,6 @@
 <?php 
 
-namespace DTFPT\Traits;
+namespace WPDT\Traits;
 
 /**
  * Trait for single instance using in this plugin
@@ -15,7 +15,7 @@ Trait Singleton
 	 * Singleton instance of this class.
 	 *
 	 * @since   1.0.0
-	 * @var     DTFPT\Traits\Singleton
+	 * @var     WPDT\Traits\Singleton
 	 */
 	protected static $instance = null;
 
@@ -33,7 +33,7 @@ Trait Singleton
 	 * Creates or returns an instance of this class.
 	 *
 	 * @since   1.0.0
-	 * @return  DTFPT\Traits\Singleton A single instance of this class.
+	 * @return  WPDT\Traits\Singleton A single instance of this class.
 	 */
 	public static function instance() {
 		if ( null === self::$instance ) {

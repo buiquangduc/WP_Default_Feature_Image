@@ -1,6 +1,6 @@
 <?php
 
-namespace DTFPT\Traits;
+namespace WPDT\Traits;
 
 /**
  * Trait for all classes which have sub-modules
@@ -23,7 +23,7 @@ Trait HasModule
 	 * Load neccessary sub-modules for the this class.
 	 * 
 	 * @since 1.0.0
-	 * @return DTFPT\Traits\HasModule
+	 * @return WPDT\Traits\HasModule
 	 */
 	abstract public function loadModules();
 
