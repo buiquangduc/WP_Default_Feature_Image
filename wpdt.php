@@ -21,6 +21,7 @@ use WPDT\Traits\Singleton;
 use WPDT\PostType;
 use WPDT\Taxonomy;
 use WPDT\Term;
+use WPDT\Ajax;
 
 final class WPDT
 {
@@ -33,6 +34,8 @@ final class WPDT
 	public function initializes() 
 	{
 		$this->loadModules();
+
+		Ajax::instance();
 	}
 
 	/**
