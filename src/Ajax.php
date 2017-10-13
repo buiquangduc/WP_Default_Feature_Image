@@ -30,7 +30,7 @@ final class Ajax
 	 * @return void
 	 */
 	public function hooks() {
-		$actions = ['get_post_types', 'get_taxonomies', 'get_terms'];
+		$actions = ['get_post_types', 'get_taxonomies', 'get_terms', 'get_image_size_names_and_dimensions'];
 
 		foreach($actions as $action) {
 			\add_action('wp_ajax_wpdfi_'. $action, [$this, $action]);
@@ -69,6 +69,17 @@ final class Ajax
 	 */
 	public function get_terms() {
 		echo json_encode(\wpdfi()->term->get('category'));
+		exit;
+	}
+
+	/**
+	 * Ajax action to get all image sizes and its dimension
+	 *
+	 * @since 1.0.0
+	 * @return array
+	 */
+	public function get_image_size_names_and_dimensions() {
+		echo json_encode(\wpdfi()->image->get_size_names_and_dimensions());
 		exit;
 	}
 }

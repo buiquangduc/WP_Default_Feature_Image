@@ -23,6 +23,7 @@ use WPDFI\Taxonomy;
 use WPDFI\Term;
 use WPDFI\Ajax;
 use WPDFI\Admin;
+use WPDFI\Image;
 
 final class WPDFI
 {
@@ -74,7 +75,8 @@ final class WPDFI
 			'templater'	=> new VA\Templater(WPDFI_TEMPLATES_PATH, 'blade'),
 			'post_type' => PostType::instance(),
 			'taxonomy'	=> Taxonomy::instance(),
-			'term'		=> Term::instance()
+			'term'		=> Term::instance(),
+			'image'		=> Image::instance()
 		];
 			
 		foreach($modules as $moduleName => $moduleHandle) {
@@ -95,5 +97,4 @@ function wpdfi() {
     return WPDFI::instance();
 }
 
-// Kick it off
 add_action('plugins_loaded', [wpdfi(), 'hooks']);
