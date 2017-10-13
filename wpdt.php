@@ -20,6 +20,7 @@ use WPDT\Traits\HasModule;
 use WPDT\Traits\Singleton;
 use WPDT\PostType;
 use WPDT\Taxonomy;
+use WPDT\Term;
 
 final class WPDT
 {
@@ -67,6 +68,7 @@ final class WPDT
 			'templater'	=> new VA\Templater(WPDT_TEMPLATES_PATH, 'blade'),
 			'post_type' => PostType::instance(),
 			'taxonomy'	=> Taxonomy::instance(),
+			'term'		=> Term::instance()
 		];
 			
 		foreach($modules as $moduleName => $moduleHandle) {
