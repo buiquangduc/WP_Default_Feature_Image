@@ -30,7 +30,7 @@ final class Taxonomy
 	 * @since 1.0.0
 	 * @return array
 	 */
-	public function get($post_type = 'post') {
+	public function get($post_type) {
 		$data = [];
 
 		if($post_type) {

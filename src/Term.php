@@ -30,21 +30,25 @@ final class Term
 	 * @since 1.0.0
 	 * @return array
 	 */
-	public function get($taxonomy = 'category') {
+	public function get($taxonomy) {
 		$names = [];
 
-		$terms = \get_terms([
-			'taxonomy' => $taxonomy,
-			'hide_empty' => false
-		]);
+		if($taxonomy) {
 
-		foreach($terms as $index => $term) {
+			$terms = \get_terms([
+				'taxonomy' => $taxonomy,
+				'hide_empty' => false
+			]);
 
-			$names[$index]['id'] = $term->term_id;
-			$names[$index]['name'] = $term->name;
+			foreach($terms as $index => $term) {
+
+				$names[$index]['id'] = $term->term_id;
+				$names[$index]['name'] = $term->name;
+
+			}
 
 		}
-
+		
 		return $names;
 	}
 }
