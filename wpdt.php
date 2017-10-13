@@ -11,7 +11,7 @@
 
 define('WPDT_URL_BASE', plugin_dir_url(__FILE__) );
 define('WPDT_DIR_BASE', plugin_dir_path( __FILE__ ) );
-define('WPDT_ASSETS', WPDT_URL_BASE . '/dist/' );
+define('WPDT_ASSETS', WPDT_URL_BASE . '/assets/' );
 define('WPDT_TEMPLATES_PATH', WPDT_DIR_BASE.  '/templates/');
 
 require_once WPDT_DIR_BASE . '/vendor/autoload.php';
@@ -21,6 +21,8 @@ use WPDT\Traits\Singleton;
 use WPDT\PostType;
 use WPDT\Taxonomy;
 use WPDT\Term;
+use WPDT\Ajax;
+use WPDT\Admin;
 
 final class WPDT
 {
@@ -33,18 +35,22 @@ final class WPDT
 	public function initializes() 
 	{
 		$this->loadModules();
+
+		Ajax::instance();
+		Admin::instance();
 	}
 
 	/**
-	 * hooks
+	 * All WordPress hooks come here
 	 * 
 	 * @since 1.0.0
 	 * @return void
 	 */
 	public function hooks() 
 	{
-		add_action( 'init', [$this, 'init'], 0);
 
+		add_action( 'init', [$this, 'init'], 0);
+		
 		$this->moduleHooks();
 
 	}
