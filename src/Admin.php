@@ -64,21 +64,9 @@ final class Admin
 		// Exit if this is not options and WP Default Thumbnail settings page
 		if($pagenow != 'options-general.php' or $_GET['page'] != 'wpdfi-settings.php') return;
 		
-		$current_tab = (isset($_GET['tab']) and $_GET['tab']) ? $_GET['tab'] : $this->get_default_tab();
-		
-		echo \wpdfi()->templater->render('admin/head', []);
-
-		echo \wpdfi()->templater->render('admin/header', [
-			'tabs' => $this->get_tabs(), 
-			'current' => $current_tab
-		]);
-			
-		echo \wpdfi()->templater->render('admin/content', [
-			'options'			=> \get_option('wpdfi-settings'),
-			'current_tab'		=> $current_tab
-		]);
-
-		echo \wpdfi()->templater->render('admin/footer', []);
+		echo \wpdfi()->layout->get_admin_layout(
+			$this->get_tabs(), $this->get_current_tab(), $this->get_options(), $this->get_layout_name()
+		);
 	}
 	
 	/**
@@ -93,6 +81,15 @@ final class Admin
 		];
 	}
 	
+	/**
+	 * Get the current Admin tab
+	 *
+	 * @since 1.0.0
+	 * @return string
+	 */
+	public function get_current_tab() {
+		return (isset($_GET['tab']) and $_GET['tab']) ? $_GET['tab'] : $this->get_default_tab();
+	}
 	
 	/**
 	 * Retrieve default tab
@@ -103,6 +100,26 @@ final class Admin
 	public function get_default_tab() {
 		return 'general';
 	}
+
+	/**
+	 * Get settings option
+	 *
+	 * @since 1.0.0
+	 * @return mixed
+	 */
+	public function get_options() {
+		return \get_option('wpdfi-settings');
+	}
+
+	/**
+	 * Get the name of current layout, it will be default or exist, depending on settings option
+	 *
+	 * @since 1.0.0
+	 * @return string
+	 */
+	public function get_layout_name() {
+		return ($this->get_options()) ? 'exist' : 'default';
+	}
 	
 	
 	/**
@@ -112,24 +129,24 @@ final class Admin
 	 * @return void
 	 */
 	public function update_settings() {
-		
 		if(isset($_GET['page']) and $_GET['page'] == 'wpdfi-settings.php' and isset($_POST['_wpnonce'])) {
             $nonce = $_POST['_wpnonce'];
             if ( ! \wp_verify_nonce( $nonce, 'wpdfi-settings-page' ) ) {
                 // This nonce is not valid.
                 return;
             } else {
-            	// // Dont need to store wp_nonce value
-             //    unset($_POST['_wpnonce']);
-             //    unset($_POST['_wp_http_referer']);
+            	// Dont need to store wp_nonce value
+                unset($_POST['_wpnonce']);
+                unset($_POST['_wp_http_referer']);
                 
-             //    $settings = \get_option('wpdfi-settings');
-             //    foreach($_POST as $key => $value) {
-             //    	$settings[$key] = stripslashes($value);
-             //    }
-             //    \update_option('wpdfi-settings', $settings);
-             //    \wpdfi()->admin_notice->add('Settings Saved.', 'success');
+                $settings = \get_option('wpdfi-settings');
+                foreach($_POST as $key => $value) {
+                	$settings[$key] = $value;
+                }
+                \update_option('wpdfi-settings', $settings);
+                \wpdfi()->admin_notice->add('Settings Saved.', 'success');
             }   
         }
 	}
+
 }

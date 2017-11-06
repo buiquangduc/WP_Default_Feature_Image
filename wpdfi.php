@@ -24,6 +24,8 @@ use WPDFI\Term;
 use WPDFI\Ajax;
 use WPDFI\Admin;
 use WPDFI\Image;
+use WPDFI\Layout;
+use WPDFI\Admin\Notice;
 
 final class WPDFI
 {
@@ -49,9 +51,10 @@ final class WPDFI
 	 */
 	public function hooks() 
 	{
-
+		/* Init actions of the master plugin */
 		add_action( 'init', [$this, 'init'], 0);
-		
+
+		/* Load all module hooks */
 		$this->moduleHooks();
 
 	}
@@ -76,7 +79,9 @@ final class WPDFI
 			'post_type' => PostType::instance(),
 			'taxonomy'	=> Taxonomy::instance(),
 			'term'		=> Term::instance(),
-			'image'		=> Image::instance()
+			'image'		=> Image::instance(),
+			'layout'	=> Layout::instance(),
+			'admin_notice' => Notice::instance()
 		];
 			
 		foreach($modules as $moduleName => $moduleHandle) {

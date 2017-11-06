@@ -43,7 +43,7 @@ final class Term
 			foreach($terms as $index => $term) {
 
 				$names[$index]['id'] = $term->term_id;
-				$names[$index]['name'] = $term->name;
+				$names[$index]['text'] = $term->name;
 
 			}
 
