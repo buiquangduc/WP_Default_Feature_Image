@@ -1,6 +1,6 @@
 <?php
 
-namespace WPDT;
+namespace WPDFI;
 
 /**
  * This class handle all actions related with term
@@ -9,7 +9,7 @@ namespace WPDT;
  * @since 1.0.0
  */
 
-use WPDT\Traits\Singleton;
+use WPDFI\Traits\Singleton;
 
 final class Term
 {
@@ -43,7 +43,7 @@ final class Term
 			foreach($terms as $index => $term) {
 
 				$names[$index]['id'] = $term->term_id;
-				$names[$index]['name'] = $term->name;
+				$names[$index]['text'] = $term->name;
 
 			}
 

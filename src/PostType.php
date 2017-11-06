@@ -1,6 +1,6 @@
 <?php
 
-namespace WPDT;
+namespace WPDFI;
 
 /**
  * This class handle all actions related with post type
@@ -9,7 +9,7 @@ namespace WPDT;
  * @since 1.0.0
  */
 
-use WPDT\Traits\Singleton;
+use WPDFI\Traits\Singleton;
 
 final class PostType
 {
@@ -27,7 +27,7 @@ final class PostType
 	 * Get all Post Type names which support thumbnail feature
 	 *
 	 * @since 1.0.0
-	 * @return array
+	 * @return array $names This $names variable will have format ['post' => 'post',...]
 	 */
 	public function get_name() {
 		$names = \get_post_types();
@@ -47,6 +47,39 @@ final class PostType
 		}
 
 		return $names;
+	}
+
+	/**
+	 * Get post type singular name
+	 *
+	 * @param string $post_type
+	 * @since 1.0.0
+	 * @return string
+	 */
+	public function get_singular_name($post_type) {
+		return \get_post_type_object( $post_type )->labels->singular_name;
+	}
+
+	/**
+	 * Get ID and text, to match with select2 default value 
+	 *
+	 * @since 1.0.0 
+	 * @return array $data This $data variable will have format [['id' => 'post', 'text' => 'Post'],...]
+	 */
+	public function get_id_and_text() {
+		$data = [];
+
+		$index = 0;
+		foreach($this->get_name() as $name => $value) {
+
+			$data[$index]['id'] = $name; 
+			$data[$index]['text'] = $this->get_singular_name($name);
+
+			$index++;
+		}
+
+		return $data;
+
 	}
 
 }

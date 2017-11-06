@@ -1,0 +1,1 @@
+<script src="<?php echo WPDFI_URL_BASE.'/dist/wpdfi.js'; ?>"></script>

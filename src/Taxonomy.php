@@ -1,6 +1,6 @@
 <?php
 
-namespace WPDT;
+namespace WPDFI;
 
 /**
  * This class handle all actions related with taxonomy
@@ -9,7 +9,7 @@ namespace WPDT;
  * @since 1.0.0
  */
 
-use WPDT\Traits\Singleton;
+use WPDFI\Traits\Singleton;
 
 final class Taxonomy
 {
@@ -36,14 +36,29 @@ final class Taxonomy
 		if($post_type) {
 			
 			foreach(\get_object_taxonomies($post_type, 'objects') as $index => $taxonomy) {
+				// Only accept taxonomies which visible to admin and reader
+				if($taxonomy->show_ui and $taxonomy->show_in_menu) {
 
-				$data[$index]['name'] = $taxonomy->name;
-				$data[$index]['label'] = $taxonomy->label;
+					$data[$index]['name'] = $taxonomy->name;
+					$data[$index]['label'] = $taxonomy->label;
+
+				}	
 
 			}
 		
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Get taxonomy label from taxonomy name
+	 *
+	 * @param string $taxonomy_name 
+	 * @since 1.0.0
+	 * @return string
+	 */
+	public function get_label_from_name($name) {
+		return \get_taxonomy_labels(['name' => $name]);
 	}
 }

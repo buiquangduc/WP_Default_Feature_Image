@@ -1,0 +1,65 @@
+@import '../node_modules/select2/dist/css/select2.min.css';
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/font-awesome/css/font-awesome.min.css';
+
+.option-container {
+	padding: 30px 0;
+}
+.item-option {
+	max-width: 540px;
+	margin: 0 auto 30px;
+	border: 2px solid #c3c3c3;
+	padding: 20px;
+	position: relative;
+}
+.item-option .form-group {
+	margin-bottom: 0;
+	margin-top: 15px;
+}
+.item-option .form-group:first-child {
+	margin-top: 0;
+}
+.item-option .btn-remove {
+	position: absolute;
+	right: -45px;
+	top: 10px;
+	width: 30px;
+	height: 30px;
+	line-height: 22px;
+	text-align: center;
+	background: #dc3545;
+	font-size: 30px;
+	color: #fff !important;
+	border-radius: 50%;
+	text-decoration: none !important;
+}
+#item-option-origin .btn-remove {
+	display: none;
+}
+.text-label {
+	vertical-align: middle;
+}
+.icon-tootip {
+	vertical-align: middle;
+	font-size: 20px;
+	margin-left: 5px;
+}
+.btn-add {
+	font-size: 40px;
+	margin-bottom: 20px;
+	display: inline-block;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	line-height: 30px;
+	text-align: center;
+	background: #28a745;
+	color: #fff !important;
+	text-decoration: none !important;
+}
+.btn {
+	cursor: pointer;
+}
+.select2-container {
+	width: 100% !important;
+}
