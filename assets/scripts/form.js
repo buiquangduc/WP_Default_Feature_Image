@@ -234,7 +234,7 @@ var Form = function(id) {
     }
 
     /**
-     * Submit the Form
+     * Submit the Form.
      */
     this._submit = function() {
 
@@ -242,6 +242,9 @@ var Form = function(id) {
 
     }
 
+    /**
+     * Remove a section from sections variable.
+     */
     this.removeSection = function(sectionIndex) {
 
         sections.splice(sectionIndex, 1);

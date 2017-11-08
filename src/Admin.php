@@ -147,6 +147,17 @@ final class Admin
                 \wpdfi()->admin_notice->add('Settings Saved.', 'success');
             }   
         }
+	}	
+
+	/**
+	 * Get single setting option
+	 *
+	 * @param string $option
+	 * @since 1.0.0
+	 * @return string
+	 */
+	public function get_option($option) {
+		return (\get_option('wpdfi-settings')[$option]) ? \get_option('wpdfi-settings')[$option] : 'publish';
 	}
 
 }
