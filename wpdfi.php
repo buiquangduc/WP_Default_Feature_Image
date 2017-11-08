@@ -40,7 +40,6 @@ final class WPDFI
 		$this->loadModules();
 
 		Ajax::instance();
-		Admin::instance();
 	}
 
 	/**
@@ -81,7 +80,8 @@ final class WPDFI
 			'term'		=> Term::instance(),
 			'image'		=> Image::instance(),
 			'layout'	=> Layout::instance(),
-			'admin_notice' => Notice::instance()
+			'admin_notice' => Notice::instance(),
+			'admin'		=> Admin::instance()
 		];
 			
 		foreach($modules as $moduleName => $moduleHandle) {

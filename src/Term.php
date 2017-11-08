@@ -51,4 +51,30 @@ final class Term
 		
 		return $names;
 	}
+
+	/**
+	 * Format a list of WP_Term object to term_id array
+	 * 
+	 * @param array $terms
+	 * @since 1.0.0
+	 * @return array
+	 */
+	public function format_to_compare($terms) {
+
+		$terms_array = [];
+		
+		foreach($terms as $term) {
+
+			$terms_array[$term->taxonomy][] = $term->term_id;
+
+		}
+
+		return $terms_array;
+
+	}
+
+
+
+
+
 }
