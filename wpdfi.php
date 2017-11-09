@@ -8,9 +8,10 @@
  * License: GNUv3
  * Text Domain: wpdfi
  */
-
-define('WPDFI_URL_BASE', plugin_dir_url(__FILE__) );
-define('WPDFI_DIR_BASE', plugin_dir_path( __FILE__ ) );
+define('WPDFI_PLUGIN', __FILE__ );
+define('WPDFI_PLUGIN_BASENAME', plugin_basename( WPDFI_PLUGIN ) );
+define('WPDFI_URL_BASE', plugin_dir_url( WPDFI_PLUGIN) );
+define('WPDFI_DIR_BASE', plugin_dir_path( WPDFI_PLUGIN ) );
 define('WPDFI_ASSETS', WPDFI_URL_BASE . '/assets/' );
 define('WPDFI_TEMPLATES_PATH', WPDFI_DIR_BASE.  '/templates/');
 
@@ -50,11 +51,27 @@ final class WPDFI
 	 */
 	public function hooks() 
 	{
-		/* Init actions of the master plugin */
-		add_action( 'init', [$this, 'init'], 0);
+
+		add_action( 'init', [$this, 'init']);
 
 		/* Load all module hooks */
 		$this->moduleHooks();
+
+	}
+
+	/**
+	 * All Install and default settings stuff for this plugin come here.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function install() {
+
+		$options = get_option('wpdfi-settings');
+		if(!$options['options']['status_for_update']) {
+			$options['options']['status_for_update'] = 'publish';
+			update_option('wpdfi-settings', $options);
+		}
 
 	}
 	
@@ -103,3 +120,5 @@ function wpdfi() {
 }
 
 add_action('plugins_loaded', [wpdfi(), 'hooks']);
+
+register_activation_hook(WPDFI_PLUGIN, [wpdfi(), 'install']);
