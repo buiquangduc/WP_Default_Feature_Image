@@ -77,7 +77,8 @@ final class Admin
 	 */
 	public function get_tabs() {
 		return [ 
-			'general'		=> 'General',
+			'sections'		=> 'Sections',
+			'options'		=> 'Options'
 		];
 	}
 	
@@ -98,7 +99,7 @@ final class Admin
 	 * @return string
 	 */
 	public function get_default_tab() {
-		return 'general';
+		return 'sections';
 	}
 
 	/**
@@ -118,7 +119,7 @@ final class Admin
 	 * @return string
 	 */
 	public function get_layout_name() {
-		return ($this->get_options()) ? 'exist' : 'default';
+		return ($this->get_option($this->get_current_tab())) ? 'exist' : 'default';
 	}
 	
 	
@@ -157,7 +158,7 @@ final class Admin
 	 * @return string
 	 */
 	public function get_option($option) {
-		return (\get_option('wpdfi-settings')[$option]) ? \get_option('wpdfi-settings')[$option] : 'publish';
+		return \get_option('wpdfi-settings')[$option];
 	}
 
 }
