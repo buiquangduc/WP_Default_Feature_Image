@@ -168,4 +168,14 @@ final class PostType
 		return \wpdfi()->term->format_to_compare($terms);
 	}
 
+	/**
+	 * Get all post statuses.
+	 * 
+	 * @since 1.0.0
+	 * @return array
+	 */
+	public function get_all_statuses() {
+		return \get_post_statuses();
+	}
+
 }
