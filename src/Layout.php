@@ -60,7 +60,7 @@ final class Layout {
 	 * @return VA\Templater
 	 */
 	public function get_default_layout($section_index, $include_delete) {
-		return \wpdfi()->templater->render('admin.blocks.tabs.general.default', [
+		return \wpdfi()->templater->render('admin.blocks.tabs.sections.default', [
 			'section_index' => $section_index, 'include_delete' => $include_delete
 		]);
 	}
