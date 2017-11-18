@@ -12,9 +12,14 @@ var Section = function(sectionIndex, parentForm) {
     var section = this;
 
     /**
+     * index variable is created to represent Section index.
+     */
+    var index = sectionIndex;
+
+    /**
      * id variable is create to represent id of the Section
      */
-    var id = '#item-option-origin-' + sectionIndex;
+    var id = '#item-option-origin-' + index;
 
     /**
      * element variable is created to be a master element of the Section, all the variable will be found via element variable.
@@ -135,11 +140,12 @@ var Section = function(sectionIndex, parentForm) {
          *    If PostType value is not exist, store an error in errors variable, then return false.
          */
         if(!postType.getValue()) {
-            section._storeError('Post Type value on Section ' + sectionIndex + ' must be not empty');
+            console.log(index);
+            section._storeError('Post Type value on Section ' + index + ' must be not empty');
             return false;
         } else {
             if(!imageUpload.getId() || !imageUpload.getSource()) {
-                section._storeError('Uploaded image value on Section ' + sectionIndex + ' must be not empty');
+                section._storeError('Uploaded image value on Section ' + index + ' must be not empty');
                 return false;
             }
         }
@@ -150,7 +156,9 @@ var Section = function(sectionIndex, parentForm) {
      * Store error in errors variable.
      */
     this._storeError = function(error) {
+
         errors.push(error);
+    
     }
 
     /**
@@ -180,13 +188,12 @@ var Section = function(sectionIndex, parentForm) {
             event.preventDefault();
             element.slideUp( '300', function() {
                 element.remove();
+                /** 
+                 * Remove section from parent form.
+                 * Note that javascript array index start from 0, so we need to minus 1
+                 */
+                parentForm.removeSection(index - 1);
             });
-            /** 
-             * Remove section from parent form.
-             * Note that javascript array index start from 0, so we need to minus 1
-             */
-
-            parentForm.removeSection(sectionIndex-1);
         });
     }
 
@@ -209,7 +216,7 @@ var Section = function(sectionIndex, parentForm) {
              *        Redo checkLayoutAndAssignVariable.
              */
             if(postType.getValue()) {
-                layout.getRelatedSectionLayout(sectionIndex, postType.getValue())
+                layout.getRelatedSectionLayout(index, postType.getValue())
                       .done(section._addLayout)
                       .then(section._checkLayoutAndAssignVariable);
             }
@@ -280,6 +287,33 @@ var Section = function(sectionIndex, parentForm) {
         if(element.find(className).length > 0) return true;
         return false;
     } 
+
+    /**
+     * Update index of the section whenever another section is deleted.
+     */
+    this.updateIndex = function() {
+
+        index = section.getActualIndex();
+
+    }
+
+    /**
+     * Get current index of the section.
+     */
+    this.getCurrentIndex = function() {
+
+        return index;
+
+    }
+
+    /**
+     * Get actual index of the section.
+     */
+    this.getActualIndex = function() {
+
+        return element.attr('data-index');
+
+    }
 
 }
 

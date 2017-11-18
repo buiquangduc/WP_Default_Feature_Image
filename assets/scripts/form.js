@@ -1,5 +1,6 @@
 import Section from './section.js';
 import Layout from './layout.js';
+import Helper from './helper.js';
 
 var Form = function(id) {
 
@@ -44,20 +45,32 @@ var Form = function(id) {
      */
     var errors = [];
 
+    /**
+     * sectionClass variable is created to represent section class, for better readable.
+     */
+    var sectionClass = '.item-option';
+
     /** 
      * layout variable is created to handle all rendering layout stuff for the Form.
      */
     var layout = new Layout();
 
+    /** 
+     * helper variable is created to handle all functions which not related to any object.
+     */
+    var helper = new Helper();
+
     /**
      * Initialize actions when create a single instance of Form.
      */
     this.init = function() {
-        /* First: Assign all exist sections to sections variable. */
+        /* Reindex all the sections. */
+        form._reindexSectionsElement();
+        /* Assign all exist sections to sections variable. */
         form._assignExistSections();
-        /* Second: Validate all the data when submit the Form. */
+        /* Validate all the data when submit the Form. */
         form._validate();
-        /* Third: Bind add new section feature when click on Add Section Button. */
+        /* Bind add new section feature when click on Add Section Button. */
         form._addNewSection();
     }
 
@@ -70,19 +83,26 @@ var Form = function(id) {
             e.preventDefault();
             /* First: count total sections, assign it to a temporary variable totalSection. */
             var totalSection = form._countTotalSections();
-            /* Second: 
+            /* Second: disable add button, don't let user click multiple times. */
+            form._disableAddButton();
+            /* Third: 
              *    Call an AJAX to get a default layout of a section .
              *    Display the default layout we just received in the bottom of the section wrapper.
              *    Initialize new section.
              *    Update Form's section variable.
+             *    Enable add button.
              */
             layout.getDefaultSectionLayout(totalSection + 1).done(function(html){
+
                 form._addNewLayout(html);
 
                 var section = new Section(totalSection+1, form);
                 section.init();
 
                 form._updateSectionVariable(section);
+
+                form._enableAddButton();
+
             });
             
 
@@ -129,9 +149,9 @@ var Form = function(id) {
          */
         var flag = true;
         sections.forEach(function(section){
-
             if(!section.validate()) 
                 flag = false;
+                console.log(section.getErrors());
                 form._updateErrors(section.getErrors());
                 section.truncateErrors();
         });
@@ -194,7 +214,7 @@ var Form = function(id) {
      */
     this._addNewLayout = function(html) {
         /* Display the layout passed via parameter to the bottom of section wrapper. */
-        $(JSON.parse(html)).appendTo(sectionWrapper).slideDown('300');
+        $(JSON.parse(html)).appendTo(sectionWrapper);
 
     }
 
@@ -203,10 +223,10 @@ var Form = function(id) {
      */
     this._assignExistSections = function() {
 
-        element.find('.item-option').each(function(index) {
+        element.find(sectionClass).each(function() {
 
-            /* Need to + 1 to sync with section length, because index start at 0 */
-            var section = new Section(index+1, form);
+            var sectionIndex = $(this).attr('data-index');
+            var section = new Section(sectionIndex, form);
             section.init();
 
             form._updateSectionVariable(section);
@@ -243,13 +263,102 @@ var Form = function(id) {
     }
 
     /**
-     * Remove a section from sections variable.
+     * Remove a section from the Form.
      */
     this.removeSection = function(sectionIndex) {
+
+        /**
+         * First: we need to remove the section from sections variable.
+         * Second: we need to reindex all the sections element of the Form (Html).
+         * Third: we need to reindex all the sections object of the Form (Javascript Object).
+         */
+        form._rmSectionInSectionsVar(sectionIndex);
+        form._reindexSectionsElement();
+        form._reindexSectionsObject();
+
+    }
+
+    /**
+     * Remove a section from sections variable.
+     */
+    this._rmSectionInSectionsVar = function(sectionIndex) {
 
         sections.splice(sectionIndex, 1);
 
     }
+
+    /**
+     * Reindex section element, after initilize or after remove section.
+     */
+    this._reindexSectionsElement = function() {
+
+        /**
+         * Loop through all exist section element.
+         * Reindex the section via index of the element.
+         */
+        element.find(sectionClass).each(function(elementIndex){
+
+            var sectionElement = $(this);
+            var oldIndex = sectionElement.attr('data-index');
+            var newIndex = elementIndex + 1;
+            var indexDifferent = (oldIndex != newIndex);
+            if(indexDifferent) {
+                /* Reindex input of the section. */
+                helper.reindexSectionInput(sectionElement, oldIndex, newIndex);
+                /* Reindex select input of the section. */
+                helper.reindexSectionSelect(sectionElement, oldIndex, newIndex);
+                /* Update section id. */
+                helper.updateSectionId(sectionElement, oldIndex, newIndex);
+                /* Update section label. */
+                helper.updateSectionLabel(sectionElement, newIndex);
+                /* Update section index. */
+                helper.updateSectionIndex(sectionElement, newIndex);
+            }
+
+        })
+
+    }
+
+    /**
+     * Reindex sections object whenever a section is deleted.
+     */
+    this._reindexSectionsObject = function() {
+
+        /**
+         * Loop through all exist section object.
+         * Reindex the section via index of the element.
+         */
+        sections.forEach(function(section){
+
+            var indexDifferent = (section.getCurrentIndex() != section.getActualIndex());
+            if(indexDifferent) {
+
+                section.updateIndex();
+
+            }
+
+        });
+
+    }
+
+    /**
+     * Disable add button.
+     */
+    this._disableAddButton = function() {
+
+        addButton.css('pointer-events', 'none');
+
+    }
+
+    /**
+     * Enable add button.
+     */
+    this._enableAddButton = function() {
+
+        addButton.css('pointer-events', 'visible');
+
+    }
+
 
 }
 
