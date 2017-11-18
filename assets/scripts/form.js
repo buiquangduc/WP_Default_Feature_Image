@@ -1,6 +1,7 @@
 import Section from './section.js';
 import Layout from './layout.js';
 import Helper from './helper.js';
+import Sortable from 'sortablejs';
 
 var Form = function(id) {
 
@@ -68,6 +69,8 @@ var Form = function(id) {
         form._reindexSectionsElement();
         /* Assign all exist sections to sections variable. */
         form._assignExistSections();
+        /* Initialize Sortable JS to reorder form's sections. */
+        form._initilizeSortable();
         /* Validate all the data when submit the Form. */
         form._validate();
         /* Bind add new section feature when click on Add Section Button. */
@@ -236,6 +239,26 @@ var Form = function(id) {
     }
 
     /**
+     * Initialize Sortable to reorder form's sections.
+     */
+    this._initilizeSortable = function() {
+
+        Sortable.create(section_wrapper, { 
+
+            animation: 150,
+            // Element dragging ended
+            onEnd: function (evt) {
+                
+                form._reindexSectionsElement();
+                form._reindexSectionsObject();
+
+            },
+
+        });
+
+    }
+
+    /**
      * Count total number of sections.
      */
     this._countTotalSections = function() {
@@ -288,7 +311,7 @@ var Form = function(id) {
     }
 
     /**
-     * Reindex section element, after initilize or after remove section.
+     * Reindex section element.
      */
     this._reindexSectionsElement = function() {
 
@@ -297,7 +320,6 @@ var Form = function(id) {
          * Reindex the section via index of the element.
          */
         element.find(sectionClass).each(function(elementIndex){
-
             var sectionElement = $(this);
             var oldIndex = sectionElement.attr('data-index');
             var newIndex = elementIndex + 1;
@@ -320,7 +342,7 @@ var Form = function(id) {
     }
 
     /**
-     * Reindex sections object whenever a section is deleted.
+     * Reindex sections object.
      */
     this._reindexSectionsObject = function() {
 

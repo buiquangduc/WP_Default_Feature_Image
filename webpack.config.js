@@ -32,7 +32,8 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery",
             "window.jQuery": "jquery",
-            select2: "select2"
+            select2: "select2",
+            sortablejs: "sortablejs"
         }),
         new ExtractTextPlugin({
             filename: '[name].css',
