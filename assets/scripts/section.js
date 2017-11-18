@@ -315,6 +315,15 @@ var Section = function(sectionIndex, parentForm) {
 
     }
 
+    /**
+     * Get ID of the section.
+     */
+    this.getId = function() {
+
+        return id;
+
+    }
+
 }
 
 export default Section;

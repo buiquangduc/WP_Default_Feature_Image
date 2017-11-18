@@ -3,7 +3,7 @@
 	<?php wp_nonce_field( "wpdfi-settings-page" ); ?>
 	<div class="container">
 		<div class="option-container">
-			<div class="option-group" id="section_wrapper">
+			<div class="option-group" id="section_wrapper" class="list-group">
 				@include("admin.blocks.tabs.{$current_tab}.{$layout_name}", ['options' => $options])
 			</div>
 			<section class="option-footer text-center">
