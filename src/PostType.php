@@ -37,6 +37,7 @@ final class PostType
 
 	/**
 	 * Add Default Feature Image after a post is updated with specific conditionals.
+	 * Core action of this plugin.
 	 *
 	 * @param integer $post_id
 	 * @param WP_POST $post_after
@@ -46,7 +47,7 @@ final class PostType
 	 */
 	public function add_default_feature_image($post_id, $post_after, $post_before) {
 		/* Get the Admin Setting for option 'status_for_update', this option will has a value like publish, pending,... */
-		$status_for_update = \wpdfi()->admin->get_option('status_for_update');
+		$status_for_update = \wpdfi()->admin->get_option('options', 'status_for_update');
 
 		/**
 		 * Check the post-after-updated (pau).
@@ -59,24 +60,41 @@ final class PostType
 
 				/* Get pau information about Terms */
 				$terms = $this->get_all_terms_post($post_id, $post_after->post_type);
-
+				
 				/* Get main Admin Setting */
-				$options = \wpdfi()->admin->get_options();
+				$options = \wpdfi()->admin->get_option('sections');
 
 				/* Loop through main Admin Setting to compare with pau information. */
-				foreach($options['sections'] as $option) {
+				$conditional_status = false; 
+				foreach($options as $option) {
 
 					if($option['post_type'] == $post_after->post_type) {
-
-						/* If two terms array match, set the default feature image for the post. */
+						$option_taxonomy_not_exist = (!$option['taxonomy']);
+						$term_is_uncategorized = ($terms == ['category' => [1]]);
+						$posttype_is_post = ($post_after->post_type == 'post');
+						/* If two terms array match. */
 						if($terms == $option['taxonomy']) {
 
-							\set_post_thumbnail( $post_id, $option['image_id'] );
+							$conditional_status = true;
+
+						/**
+						 * If post type is 'post', category is 'Uncategorized' and option taxonomy not exist.
+						 * We need to check this conditional because default post type category is 'Uncategorized'.
+						 */
+						} elseif ($option_taxonomy_not_exist and $term_is_uncategorized and $posttype_is_post) {
+
+							$conditional_status = true;
 
 						}
 
 					}
+					/* If match conditional, set the default feature image for the post. */
+					if($conditional_status == true) {
 
+						\set_post_thumbnail( $post_id, $option['image_id'] );
+						return;
+					
+					}
 				}
 			}
 		}
