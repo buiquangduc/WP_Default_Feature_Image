@@ -65,7 +65,7 @@ final class Admin
 		if($pagenow != 'options-general.php' or $_GET['page'] != 'wpdfi-settings.php') return;
 		
 		echo \wpdfi()->layout->get_admin_layout(
-			$this->get_tabs(), $this->get_current_tab(), $this->get_options(), $this->get_layout_name()
+			$this->_get_tabs(), $this->_get_current_tab(), $this->_get_options(), $this->_get_layout_name()
 		);
 	}
 	
@@ -75,7 +75,7 @@ final class Admin
 	 * @since 1.0.0
 	 * @return array
 	 */
-	public function get_tabs() {
+	private function _get_tabs() {
 		return [ 
 			'sections'		=> 'Sections',
 			'options'		=> 'Options'
@@ -88,8 +88,8 @@ final class Admin
 	 * @since 1.0.0
 	 * @return string
 	 */
-	public function get_current_tab() {
-		return (isset($_GET['tab']) and $_GET['tab']) ? $_GET['tab'] : $this->get_default_tab();
+	private function _get_current_tab() {
+		return (isset($_GET['tab']) and $_GET['tab']) ? $_GET['tab'] : $this->_get_default_tab();
 	}
 	
 	/**
@@ -98,17 +98,17 @@ final class Admin
 	 * @since 1.0.0
 	 * @return string
 	 */
-	public function get_default_tab() {
+	private function _get_default_tab() {
 		return 'sections';
 	}
 
 	/**
-	 * Get settings option
+	 * Get main setting options
 	 *
 	 * @since 1.0.0
 	 * @return mixed
 	 */
-	public function get_options() {
+	private function _get_options() {
 		return \get_option('wpdfi-settings');
 	}
 
@@ -118,11 +118,21 @@ final class Admin
 	 * @since 1.0.0
 	 * @return string
 	 */
-	public function get_layout_name() {
-		return ($this->get_option($this->get_current_tab())) ? 'exist' : 'default';
+	private function _get_layout_name() {
+		return ($this->get_option($this->_get_current_tab())) ? 'exist' : 'default';
 	}
 	
-	
+	/**
+	 * Update main setting options
+	 *
+	 * @param array $options
+	 * @since 1.0.0
+	 * @return boolean
+	 */
+	private function _update_options($options) {
+		return \update_option('wpdfi-settings', $options);
+	}
+
 	/**
 	 * Update wpdfi settings option
 	 *
@@ -140,25 +150,32 @@ final class Admin
                 unset($_POST['_wpnonce']);
                 unset($_POST['_wp_http_referer']);
                 
-                $settings = \get_option('wpdfi-settings');
+                $options = $this->_get_options();
                 foreach($_POST as $key => $value) {
-                	$settings[$key] = $value;
+                	$options[$key] = $value;
                 }
-                \update_option('wpdfi-settings', $settings);
-                \wpdfi()->admin_notice->add('Settings Saved.', 'success');
+
+                if($this->_update_options($options)) {
+                	\wpdfi()->admin_notice->add('Settings Saved.', 'success');
+                } else {
+                	\wpdfi()->admin_notice->add('Your options are still the same.', 'warning');
+                }
+                
             }   
         }
 	}	
 
 	/**
-	 * Get single setting option
+	 * Get single setting option.
 	 *
-	 * @param string $option
+	 * @param string $option_key
+	 * @param string $option_detail
 	 * @since 1.0.0
-	 * @return string
+	 * @return mixed(string/array)
 	 */
-	public function get_option($option) {
-		return \get_option('wpdfi-settings')[$option];
+	public function get_option($option_key, $option_detail = null) {
+		if($option_detail) return $this->_get_options()[$option_key][$option_detail];
+		return $this->_get_options()[$option_key];
 	}
 
 }
