@@ -1,6 +1,5 @@
 import Section from './section.js';
 import Layout from './layout.js';
-import Helper from './helper.js';
 import Sortable from 'sortablejs';
 
 var Form = function(id) {
@@ -56,17 +55,12 @@ var Form = function(id) {
      */
     var layout = new Layout();
 
-    /** 
-     * helper variable is created to handle all functions which not related to any object.
-     */
-    var helper = new Helper();
-
     /**
      * Initialize actions when create a single instance of Form.
      */
     this.init = function() {
-        /* Reindex all the sections. */
-        form._reindexSectionsElement();
+        /* Reindex all the sections (if needed). */
+        form._reindexSections();
         /* Assign all exist sections to sections variable. */
         form._assignExistSections();
         /* Initialize Sortable JS to reorder form's sections. */
@@ -154,7 +148,6 @@ var Form = function(id) {
         sections.forEach(function(section){
             if(!section.validate()) 
                 flag = false;
-                console.log(section.getErrors());
                 form._updateErrors(section.getErrors());
                 section.truncateErrors();
         });
@@ -248,10 +241,44 @@ var Form = function(id) {
             animation: 150,
             // Element dragging ended
             onEnd: function (evt) {
-                
-                form._reindexSectionsElement();
-                form._reindexSectionsObject();
 
+                var droppedIndex = evt.oldIndex;
+                var draggedIndex = evt.newIndex;
+                var indexDifferent = (droppedIndex != draggedIndex);
+                /* Check if old index is not the same as old index. */
+                if(indexDifferent) {
+                    /* Swap two element. */
+                    form._sortSectionsVariable();
+                    form._reindexSections();
+
+                    /** 
+                     * Check if the draggedIndex or droppedIndex equal to 0.
+                     * It mean that draggedSectionElement or droppedSectionElement is the first section. 
+                     * Add delete button on the new first section and remove delete button on the opposite section.
+                     * Bind delete event on the new first section.
+                     */
+                    var draggElFirst = (draggedIndex == 0);
+                    var droppElFirst = (droppedIndex == 0);
+                    if(draggElFirst || droppElFirst) {
+
+                        if(draggElFirst) {
+
+                            sections[draggedIndex].removeDeleteButton();
+                            sections[droppedIndex].addDeleteButton();
+                            sections[droppedIndex].onDelete();
+
+                        } else if (droppElFirst) {
+
+                            sections[droppedIndex].removeDeleteButton();
+                            sections[draggedIndex].addDeleteButton();
+                            sections[draggedIndex].onDelete();
+
+                        }
+
+                    } 
+                
+                }
+            
             },
 
         });
@@ -296,8 +323,7 @@ var Form = function(id) {
          * Third: we need to reindex all the sections object of the Form (Javascript Object).
          */
         form._rmSectionInSectionsVar(sectionIndex);
-        form._reindexSectionsElement();
-        form._reindexSectionsObject();
+        form._reindexSections();
 
     }
 
@@ -311,55 +337,23 @@ var Form = function(id) {
     }
 
     /**
-     * Reindex section element.
+     * Check and reindex all sections.
      */
-    this._reindexSectionsElement = function() {
+    this._reindexSections = function() {
 
         /**
          * Loop through all exist section element.
          * Reindex the section via index of the element.
          */
-        element.find(sectionClass).each(function(elementIndex){
-            var sectionElement = $(this);
-            var oldIndex = sectionElement.attr('data-index');
-            var newIndex = elementIndex + 1;
-            var indexDifferent = (oldIndex != newIndex);
+        sections.forEach(function(section, index, _arr){
+            
+            var sectionIndex = index + 1;
+            var indexDifferent = (sectionIndex != section.getIndex());
             if(indexDifferent) {
-                /* Reindex input of the section. */
-                helper.reindexSectionInput(sectionElement, oldIndex, newIndex);
-                /* Reindex select input of the section. */
-                helper.reindexSectionSelect(sectionElement, oldIndex, newIndex);
-                /* Update section id. */
-                helper.updateSectionId(sectionElement, oldIndex, newIndex);
-                /* Update section label. */
-                helper.updateSectionLabel(sectionElement, newIndex);
-                /* Update section index. */
-                helper.updateSectionIndex(sectionElement, newIndex);
+                section.reindex(sectionIndex);
             }
 
         })
-
-    }
-
-    /**
-     * Reindex sections object.
-     */
-    this._reindexSectionsObject = function() {
-
-        /**
-         * Loop through all exist section object.
-         * Reindex the section via index of the element.
-         */
-        sections.forEach(function(section){
-
-            var indexDifferent = (section.getCurrentIndex() != section.getActualIndex());
-            if(indexDifferent) {
-
-                section.updateIndex();
-
-            }
-
-        });
 
     }
 
@@ -381,6 +375,30 @@ var Form = function(id) {
 
     }
 
+    /**
+     * Sort section variable after drag and drop.
+     */
+    this._sortSectionsVariable = function() {
+
+        var tempSection = [];
+        element.find(sectionClass).each(function(elementIndex){
+
+            var sectionElement = $(this);
+            var oldIndex = sectionElement.attr('data-index') - 1;
+            var newIndex = elementIndex;
+            var indexDifferent = (oldIndex != newIndex);
+            if(indexDifferent) {
+                tempSection[newIndex] = sections[newIndex];
+                if(typeof tempSection[oldIndex] == 'undefined') {
+                    sections[newIndex] = sections[oldIndex];
+                } else {
+                    sections[newIndex] = tempSection[oldIndex];
+                }
+            }
+
+        });
+
+    }
 
 }
 

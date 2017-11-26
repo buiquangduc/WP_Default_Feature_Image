@@ -1,4 +1,3 @@
-import ImageSize from './imagesize.js';
 import ImageUpload from './imageupload.js';
 import Taxonomy from './taxonomy.js';
 import PostType from './posttype.js';
@@ -37,19 +36,9 @@ var Section = function(sectionIndex, parentForm) {
     var taxonomies;
 
     /**
-     * terms variable is created to represent all Term parts of the Section.
-     */
-    var terms;
-
-    /**
      * imageUpload variable is created to represent ImageUpload part of the Section.
      */
     var imageUpload;
-
-    /** 
-     * imageSize variable is created to represent ImageSize part of the Section.
-     */
-    var imageSize;
 
     /**
      * deleteButton variable is created to represent Delete Buton of the Section.
@@ -70,18 +59,18 @@ var Section = function(sectionIndex, parentForm) {
      * Initialize actions when create a instance of the Section.
      */
     this.init = function() {
-        /* First: Assign all exist layout to corresponding variable. */
+        /* Assign all exist layout to corresponding variable. */
         section._checkLayoutAndAssignVariable();
         /**
-         * Second: check if the Section has a Post Type part.
+         * Check if the Section has a Post Type part.
          *    If yes, Bind on selected feature when user changed the value of the post type.
          */
         if(typeof postType !== 'undefined') section._onSelectedPostType();
         /* 
-         * Third: check if the Section has a Delete Button.
+         * Check if the Section has a Delete Button.
          *    If yes, Bind delete feature when user click on Delete Button.
          */
-        if(typeof deleteButton !== 'undefined') section._onDelete();
+        if(typeof deleteButton !== 'undefined') section.onDelete();
     }
 
     /**
@@ -114,14 +103,7 @@ var Section = function(sectionIndex, parentForm) {
             imageUpload = new ImageUpload(id+' > .image-upload-row');
         }
 
-        /* Fourth: Check if ImageSize part exist.
-         *    If yes, assign ImageSize part to imageSize variable.
-         */
-        if(section._checkLayoutExist('.image-size-row')) {
-            imageSize = new ImageSize(id+' > .image-size-row');
-        }
-
-        /* Fifth: Check if Delete Button exist.
+        /* Fourth: Check if Delete Button exist.
          *    If yes, assign deleteButton variable to Delete Button.
          */
         if(section._checkLayoutExist('.btn-remove')) {
@@ -140,7 +122,6 @@ var Section = function(sectionIndex, parentForm) {
          *    If PostType value is not exist, store an error in errors variable, then return false.
          */
         if(!postType.getValue()) {
-            console.log(index);
             section._storeError('Post Type value on Section ' + index + ' must be not empty');
             return false;
         } else {
@@ -182,7 +163,7 @@ var Section = function(sectionIndex, parentForm) {
     /**
      * Bind delete feature when click on Delete Button.
      */
-    this._onDelete = function() {
+    this.onDelete = function() {
         deleteButton.click(function(event){
             /* Delete the section element. */
             event.preventDefault();
@@ -204,9 +185,9 @@ var Section = function(sectionIndex, parentForm) {
         /* Bind actions when user select a post type. */
         postType.selectElement.change(function(e) { 
             /* First: Delete related layout. */
-            section._deleteLayouts([taxonomies, imageUpload, imageSize]);
+            section._deleteLayouts([taxonomies, imageUpload]);
             /* Second: Truncate related variables. */
-            section._truncateVariables([taxonomies, imageUpload, imageSize]);
+            section._truncateVariables(['taxonomies', 'imageUpload']);
             /**
              * Third: 
              *    Check if selected value is not the blank value
@@ -247,13 +228,18 @@ var Section = function(sectionIndex, parentForm) {
      * Truncate Section Variables.
      */
     this._truncateVariables = function(variables) {
+        /**
+         * We will need to modify the variable of the object, so we need to do something like pointer in this situation.
+         * Unfortunately, there is no pointer in javascript. So I will use eval() function in this situation.
+         */
+
         /* Loop through each element of variables array. */
         variables.forEach(function(_var) {
             /* Check if the variable is not undefined. */
-            if(typeof _var !== 'undefined') {
-                /* Truncate variable */
-                _var = null;
+            if(eval("typeof " + _var + " != 'undefined'")) {
+                eval(_var + ' = null');
             }
+            
         });
     } 
 
@@ -261,10 +247,11 @@ var Section = function(sectionIndex, parentForm) {
      * Delete Section Layouts.
      */
     this._deleteLayouts = function(variables) {
+
         /* Loop through each element of variables array. */
         variables.forEach(function(_var) {
             /* Check if the variable is not undefined. */
-            if(typeof _var !== 'undefined') {
+            if(typeof _var !== 'undefined' && _var) {
                 /* Delete part */
                 /* Check if variable can be looped or not. */
                 if(typeof _var.length !== 'undefined') {
@@ -289,33 +276,6 @@ var Section = function(sectionIndex, parentForm) {
     } 
 
     /**
-     * Update index of the section whenever another section is deleted.
-     */
-    this.updateIndex = function() {
-
-        index = section.getActualIndex();
-
-    }
-
-    /**
-     * Get current index of the section.
-     */
-    this.getCurrentIndex = function() {
-
-        return index;
-
-    }
-
-    /**
-     * Get actual index of the section.
-     */
-    this.getActualIndex = function() {
-
-        return element.attr('data-index');
-
-    }
-
-    /**
      * Get ID of the section.
      */
     this.getId = function() {
@@ -324,6 +284,157 @@ var Section = function(sectionIndex, parentForm) {
 
     }
 
+    /**
+     * Get data index of the section.
+     */
+    this.getIndex = function() {
+
+        return index;
+
+    }
+
+    /**
+     * Remove delete button.
+     */ 
+    this.removeDeleteButton = function() {
+
+        section._removeDeleteButtonEl();
+
+    }
+
+    /** 
+     * Remove delete button element.
+     */
+    this._removeDeleteButtonEl = function() {
+
+        deleteButton.remove();
+        section._truncateVariables(['deleteButton']);
+
+    }
+
+    /**
+     * Add new delete button.
+     */
+    this.addDeleteButton = function() {
+
+        section._addDeleteButtonEl();
+        section._updateDeleteButtonVar();
+
+    }
+
+    /**
+     * Add new delete button element to the section.
+     */
+    this._addDeleteButtonEl = function() {
+
+        var newDeleteButton = layout.getDeleteButtonLayout();
+        element.append(newDeleteButton);
+
+    }
+
+    /**
+     * Update delete button variable.
+     */
+    this._updateDeleteButtonVar = function() {
+
+        deleteButton = element.find('.btn-remove');
+    
+    }
+
+    this.reindex = function(newIndex) {
+        var oldIndex = index;
+        index = newIndex;
+        section._updateID();
+        section._updateElement();
+        section._updateDataIndex();
+        section._updateInput(oldIndex, newIndex);
+        section._updateSelect(oldIndex, newIndex);
+        section._updateLabel();
+        section._truncateVariables(['postType', 'taxonomies', 'imageUpload', 'deleteButton']);
+        section._checkLayoutAndAssignVariable();
+
+    }
+
+    /**
+     * Update ID of the section.
+     */
+    this._updateID = function() {
+
+        id = '#item-option-origin-' + index;
+
+    }
+
+    /**
+     * Update Element of the section.
+     */
+    this._updateElement = function() {
+        var idVal = id.replace('#', '');
+        element.attr('id', idVal);
+        element = $(id);
+
+    }
+
+    /**
+     * Update attribute data-index of the section.
+     */
+    this._updateDataIndex = function() {
+
+        element.attr('data-index', index);
+
+    }
+
+    /**
+     * Reindex input of the section. 
+     */
+    this._updateInput = function(oldIndex, newIndex) {
+
+        element.find('input').each(function(){
+            var oldName = $(this).attr('name');
+            var validName = (typeof oldName != 'undefined');
+            /* Need to check name is valid or not before update the new name for the input. */
+            if(validName) {
+                /* Get the new name of the input by replace old index with new index. */
+                var newName = oldName.replace(oldIndex, newIndex);
+                /* Update new name for the input. */
+                $(this).attr('name', newName);
+            }
+
+        });
+
+    }
+
+    /**
+     * Reindex select input of the section. 
+     */
+    this._updateSelect = function(oldIndex, newIndex) {
+
+        element.find('select').each(function(){
+
+            var oldName = $(this).attr('name');
+            var validName = (typeof oldName != 'undefined');
+            /* Need to check name is valid or not before update the new name for the select input. */
+            if(validName) {
+                /* Get the new name of the select input by replace old index with new index. */
+                var newName = oldName.replace(oldIndex, newIndex);
+                /* Update new name for the select input. */
+                $(this).attr('name', newName);
+            }
+        });
+
+    };
+
+    /**
+     * Update section label with new index.
+     */
+    this._updateLabel = function() {
+        var labelClass = '.section-label';
+        var label = element.find(labelClass);
+        /* Remove current label. */
+        label.empty();
+        /* Update new label. */ 
+        label.text('Section ' + index);
+
+    }
 }
 
 export default Section;
