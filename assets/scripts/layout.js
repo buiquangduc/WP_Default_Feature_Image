@@ -42,6 +42,13 @@ var Layout = function() {
         return '<li class="single-error">' + errorContent + '</li>';
     }
 
+    /**
+     * Get delete button layout.
+     */
+    this.getDeleteButtonLayout = function() {
+        return '<a href="#" class="btn-remove">-</a>';
+    }
+
 }
 
 export default Layout;
