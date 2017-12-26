@@ -150,10 +150,11 @@ var Form = function(id) {
          */
         var flag = true;
         sections.forEach(function(section){
-            if(!section.validate()) 
+            if(!section.validate())  {
                 flag = false;
                 form._updateErrors(section.getErrors());
                 section.truncateErrors();
+            }   
         });
 
         return flag;
@@ -239,8 +240,8 @@ var Form = function(id) {
      * Initialize Sortable to reorder form's sections.
      */
     this._initilizeSortable = function() {
-
-        Sortable.create(section_wrapper, { 
+        var sortableWrapper = section_wrapper;
+        Sortable.create(sortableWrapper, { 
 
             animation: 150,
             // Element dragging ended
@@ -353,7 +354,7 @@ var Form = function(id) {
          * Loop through all exist section element.
          * Reindex the section via index of the element.
          */
-        sections.forEach(function(section, index, _arr){
+        sections.forEach(function(section, index){
             
             var sectionIndex = index + 1;
             var indexDifferent = (sectionIndex != section.getIndex());

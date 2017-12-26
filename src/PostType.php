@@ -40,8 +40,8 @@ final class PostType
 	 * Core action of this plugin.
 	 *
 	 * @param integer $post_id
-	 * @param WP_POST $post_after
-	 * @param WP_POST $post_before
+	 * @param \WP_POST $post_after
+	 * @param \WP_POST $post_before
 	 * @since 1.0.0
 	 * @return void
 	 */

@@ -86,7 +86,7 @@ final class Ajax
 
 	public function generate_feature_image() {
 		/* security check. */
-		check_ajax_referer( 'wpdfi-ajax-nonce', 'security' );
+		\check_ajax_referer( 'wpdfi-ajax-nonce', 'security' );
 		$update_fimage = \wpdfi()->post_type->update_fimage($_POST['post_id']);
 		$post_type = \get_post_type($_POST['post_id']);
 		$post_type_name = \wpdfi()->post_type->get_singular_name($post_type);

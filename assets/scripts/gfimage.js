@@ -109,6 +109,8 @@ var GFImage = function() {
     		case false:
     			informationWrapper.append('<p>' + response.namePT + ' with ID ' + response.postId +' because conditions are not match.</p>');
     			break;
+    		default:
+    			informationWrapper.append('<p>' + response.namePT + ' with ID ' + response.postId +' has something wrong!</p>');
     	}
 	}
 
