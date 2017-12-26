@@ -20,6 +20,7 @@
     "font-awesome": "^4.7.0",
     "jquery-validation": "^1.17.0",
     "popper.js": "^1.12.6",
+    "progressbar.js": "^1.0.1",
     "sortablejs": "^1.7.0"
   }
 }

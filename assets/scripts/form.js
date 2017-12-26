@@ -65,6 +65,8 @@ var Form = function(id) {
         form._assignExistSections();
         /* Initialize Sortable JS to reorder form's sections. */
         form._initilizeSortable();
+        /* Initialize Tooltip. */
+        form._initilizeTooltip();
         /* Validate all the data when submit the Form. */
         form._validate();
         /* Bind add new section feature when click on Add Section Button. */
@@ -99,6 +101,8 @@ var Form = function(id) {
                 form._updateSectionVariable(section);
 
                 form._enableAddButton();
+
+                form._initilizeTooltip();
 
             });
             
@@ -283,6 +287,10 @@ var Form = function(id) {
 
         });
 
+    }
+
+    this._initilizeTooltip = function() {
+        $('[data-toggle="tooltip"]').tooltip();
     }
 
     /**

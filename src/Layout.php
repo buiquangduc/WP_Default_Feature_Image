@@ -88,9 +88,4 @@ final class Layout {
 		// ]);
 		return $layout;
 	}
-
-
-
-
-
 }

@@ -31,7 +31,7 @@ final class Ajax
 	 */
 	public function hooks() {
 		$actions = ['get_post_types', 'get_terms', 'get_image_size_names_and_dimensions', 
-					'get_default_layout', 'get_related_layout'];
+					'get_default_layout', 'get_related_layout', 'generate_feature_image'];
 
 		foreach($actions as $action) {
 			\add_action('wp_ajax_wpdfi_'. $action, [$this, $action]);
@@ -80,6 +80,17 @@ final class Ajax
 	 */
 	public function get_terms() {
 		echo json_encode(\wpdfi()->term->get($_POST['taxonomy']));
+		exit;
+	}
+
+
+	public function generate_feature_image() {
+		/* security check. */
+		check_ajax_referer( 'wpdfi-ajax-nonce', 'security' );
+		$update_fimage = \wpdfi()->post_type->update_fimage($_POST['post_id']);
+		$post_type = \get_post_type($_POST['post_id']);
+		$post_type_name = \wpdfi()->post_type->get_singular_name($post_type);
+		echo json_encode(['status' => $update_fimage, 'namePT' => $post_type_name, 'postId' => $_POST['post_id']]);
 		exit;
 	}
 }

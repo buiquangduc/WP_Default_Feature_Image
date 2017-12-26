@@ -33,7 +33,8 @@ module.exports = {
             jQuery: "jquery",
             "window.jQuery": "jquery",
             select2: "select2",
-            sortablejs: "sortablejs"
+            sortablejs: "sortablejs",
+            progressbar: 'progressbar.js'
         }),
         new ExtractTextPlugin({
             filename: '[name].css',
