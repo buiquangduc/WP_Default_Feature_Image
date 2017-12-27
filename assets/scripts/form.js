@@ -267,10 +267,10 @@ var Form = function(id) {
                     if(draggElFirst || droppElFirst) {
 
                         if(draggElFirst) {
-
+                            
                             sections[draggedIndex].removeDeleteButton();
-                            sections[droppedIndex].addDeleteButton();
-                            sections[droppedIndex].onDelete();
+                            sections[droppedIndex+1].addDeleteButton();
+                            sections[draggedIndex+1].onDelete();
 
                         } else if (droppElFirst) {
 
