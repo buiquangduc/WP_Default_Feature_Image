@@ -10,5 +10,13 @@ php:
   - 7.1
   - 7.2
 
+
+before_script:
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+
+script: 
+  - bash build.sh
+
 env:
   - WP_VERSION=latest WP_MULTISITE=0
+
