@@ -1,0 +1,16 @@
+tools:
+  php_code_sniffer:
+    config:
+      standard: WordPress
+  sensiolabs_security_checker: true
+  external_code_coverage:
+    timeout: 2500
+checks:
+  php:
+    coding_standard:
+      name: WordPress
+filter:
+  excluded_paths:
+    - vendor/
+    - storage/
+    - node_modules/
