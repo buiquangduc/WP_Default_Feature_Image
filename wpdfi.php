@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WP Default Feature Image.
- * Description: Help you choose your default thumbnail for post types, categories, tags,...
+ * Description: Help you to choose default feature images for any post types, categories, tags,...
  * Version: 1.0.0
  * Author: Duc Bui Quang <ducbuiquangxd@gmail.com>
  * Author URI: https://www.ducbuiquang.com
