@@ -15,7 +15,7 @@ Trait Singleton
 	 * Singleton instance of this class.
 	 *
 	 * @since   1.0.0
-	 * @var     WPDFI\Traits\Singleton
+	 * @var     \WPDFI\Traits\Singleton
 	 */
 	protected static $instance = null;
 

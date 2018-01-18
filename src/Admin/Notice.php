@@ -50,7 +50,7 @@ final class Notice
      * Display notice template to the admin dashboard.
      * 
      * @since 1.0.0
-     * @return VA\Templater
+     * @return \VA\Templater
      */
     public function display() 
     {

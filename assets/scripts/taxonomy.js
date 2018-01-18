@@ -13,11 +13,6 @@ var Taxonomy = function(className) {
     var element = $(className);
 
     /**
-     * name variable is created to represent Taxonomy's name.
-     */
-    var name = element.data('name');
-
-    /**
      * selectElement variable is created to represent select input of the Taxonomy.
      */
     var selectElement = element.find('.taxonomy-multiple-select');

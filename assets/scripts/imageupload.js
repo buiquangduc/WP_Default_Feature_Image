@@ -45,6 +45,7 @@ var ImageUpload = function(className) {
 
     /** 
      * Popup Default WordPress build in system to import or select image.
+     * global: wp
      */
     this._popupMedia = function() {
         uploadButton.click(function(e) {
@@ -53,7 +54,7 @@ var ImageUpload = function(className) {
                 title: 'Upload Image',
                 // mutiple: true if you want to upload multiple files at once.
                 multiple: false
-            }).open().on('select', function(e){
+            }).open().on('select', function(){
                 // This will return the selected image from the Media Uploader, the result is an object.
                 var _uploaded_image = _image.state().get('selection').first();
                 // We convert uploaded_image to a JSON object to make accessing it easier.

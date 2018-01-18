@@ -40,8 +40,8 @@ final class PostType
 	 * Core action of this plugin.
 	 *
 	 * @param integer $post_id
-	 * @param WP_POST $post_after
-	 * @param WP_POST $post_before
+	 * @param \WP_POST $post_after
+	 * @param \WP_POST $post_before
 	 * @since 1.0.0
 	 * @return void
 	 */
@@ -58,46 +58,60 @@ final class PostType
 			/* Check if the pau status match the Admin Setting option 'status_for_update'. */
 			if($status_for_update == $post_after->post_status) {
 
-				/* Get pau information about Terms */
-				$terms = $this->get_all_terms_post($post_id, $post_after->post_type);
-				
-				/* Get main Admin Setting */
-				$options = \wpdfi()->admin->get_option('sections');
+				$this->update_fimage($post_id);
 
-				/* Loop through main Admin Setting to compare with pau information. */
-				$conditional_status = false; 
-				foreach($options as $option) {
-
-					if($option['post_type'] == $post_after->post_type) {
-						$option_taxonomy_not_exist = (!$option['taxonomy']);
-						$term_is_uncategorized = ($terms == ['category' => [1]]);
-						$posttype_is_post = ($post_after->post_type == 'post');
-						/* If two terms array match. */
-						if($terms == $option['taxonomy']) {
-
-							$conditional_status = true;
-
-						/**
-						 * If post type is 'post', category is 'Uncategorized' and option taxonomy not exist.
-						 * We need to check this conditional because default post type category is 'Uncategorized'.
-						 */
-						} elseif ($option_taxonomy_not_exist and $term_is_uncategorized and $posttype_is_post) {
-
-							$conditional_status = true;
-
-						}
-
-					}
-					/* If match conditional, set the default feature image for the post. */
-					if($conditional_status == true) {
-
-						\set_post_thumbnail( $post_id, $option['image_id'] );
-						return;
-					
-					}
-				}
 			}
 		}
+	}
+
+	/**
+	 * Update feature image for a specific post.
+	 *
+	 * @param integer $post_id
+	 * @return boolean
+	 */
+	public function update_fimage($post_id) {
+		if(!$post_id) return false;
+		$post_type = \get_post_type($post_id);
+		/* Get post's data about Terms */
+		$terms = $this->get_all_terms_post($post_id, $post_type);
+		
+		/* Get main Admin Setting */
+		$options = \wpdfi()->admin->get_option('sections');
+
+		/* Loop through main Admin Setting to compare with post's data. */
+		$conditional_status = false; 
+		foreach($options as $option) {
+
+			if($option['post_type'] == $post_type) {
+				$option_taxonomy_not_exist = (!$option['taxonomy']);
+				$term_is_uncategorized = ($terms == ['category' => [1]]);
+				$posttype_is_post = ($post_type == 'post');
+				/* If two terms array match. */
+				if($terms == $option['taxonomy']) {
+
+					$conditional_status = true;
+
+				/**
+				 * If post type is 'post', category is 'Uncategorized' and option taxonomy not exist.
+				 * We need to check this conditional because default post type category is 'Uncategorized'.
+				 */
+				} elseif ($option_taxonomy_not_exist and $term_is_uncategorized and $posttype_is_post) {
+
+					$conditional_status = true;
+
+				}
+
+			}
+			/* If match conditional, set the default feature image for the post. */
+			if($conditional_status == true) {
+
+				\set_post_thumbnail( $post_id, $option['image_id'] );
+				return true;
+			
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -196,4 +210,78 @@ final class PostType
 		return \get_post_statuses();
 	}
 
+	/**
+	 * Get post types follow settings value.
+	 *
+	 * @since 1.0.0
+	 * @return array $pt_fl_sections
+	 */
+	protected function _get_pt_fl_settings() {
+
+		$pt_fl_settings = [];
+		$sections_values = \wpdfi()->admin->get_option('sections');
+		if($sections_values) {
+			foreach($sections_values as $section_values) {
+				/* Only insert new value if there current value is not exist yet. */
+				if(!in_array($section_values['post_type'], $pt_fl_settings)) {
+					$pt_fl_settings[] = $section_values['post_type'];
+				} 
+			}
+		}
+		return $pt_fl_settings;
+	}
+
+	/**
+	 * Get the arguments to get posts which do not have feature image.
+	 *
+	 * @param mixed (array/string) $post_type
+	 * @since 1.0.0
+	 * @return array
+	 */
+	protected function _get_args_posts_no_fimage($post_type) {
+		return [
+			'post_type' => $post_type,
+		    'meta_query' => [
+		        [
+		            'key' => '_thumbnail_id',
+		            'compare' => 'NOT EXISTS'
+		        ]
+		    ],
+		    'post_status' => ['publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash'],
+		    'orderby' => 'ID',
+		    'order' => 'ASC',
+		    'posts_per_page' => -1
+	 	];
+	}
+
+	/**
+	 * Get the post types details, post types are got from settings.
+	 * Detail is how many number of posts from this post type which do not have feature image.
+	 *
+	 * @since 1.0.0
+	 * @return array $pt_details_fl_settings
+	 */
+	public function get_pt_details_fl_settings() {
+		$post_types = $this->_get_pt_fl_settings();
+		$pt_details_fl_settings = [];
+		foreach($post_types as $pt) {
+			/* Only insert new value if there current value is not exist yet. */
+			if(!array_key_exists($pt, $pt_details_fl_settings)) {
+				$args = $this->_get_args_posts_no_fimage($pt);
+				$posts_no_fimage = get_posts($args);
+				$pt_details_fl_settings[$pt] = count($posts_no_fimage);
+			}
+		}
+		return $pt_details_fl_settings;
+	}
+
+	public function get_posts_no_fimage_id() {
+		$post_types = $this->_get_pt_fl_settings();
+		$qr_posts_no_fimage = get_posts( $this->_get_args_posts_no_fimage($post_types) );
+		$ids = [];
+		foreach($qr_posts_no_fimage as $post) {
+			$ids[] = $post->ID;
+		}  
+		return $ids;
+	}
 }

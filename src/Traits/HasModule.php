@@ -23,7 +23,7 @@ Trait HasModule
 	 * Load neccessary sub-modules for the this class.
 	 * 
 	 * @since 1.0.0
-	 * @return WPDFI\Traits\HasModule
+	 * @return \WPDFI\Traits\HasModule
 	 */
 	abstract public function loadModules();
 

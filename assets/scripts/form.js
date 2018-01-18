@@ -65,6 +65,8 @@ var Form = function(id) {
         form._assignExistSections();
         /* Initialize Sortable JS to reorder form's sections. */
         form._initilizeSortable();
+        /* Initialize Tooltip. */
+        form._initilizeTooltip();
         /* Validate all the data when submit the Form. */
         form._validate();
         /* Bind add new section feature when click on Add Section Button. */
@@ -99,6 +101,8 @@ var Form = function(id) {
                 form._updateSectionVariable(section);
 
                 form._enableAddButton();
+
+                form._initilizeTooltip();
 
             });
             
@@ -146,10 +150,11 @@ var Form = function(id) {
          */
         var flag = true;
         sections.forEach(function(section){
-            if(!section.validate()) 
+            if(!section.validate())  {
                 flag = false;
                 form._updateErrors(section.getErrors());
                 section.truncateErrors();
+            }   
         });
 
         return flag;
@@ -235,8 +240,8 @@ var Form = function(id) {
      * Initialize Sortable to reorder form's sections.
      */
     this._initilizeSortable = function() {
-
-        Sortable.create(section_wrapper, { 
+        var sortableWrapper = section_wrapper;
+        Sortable.create(sortableWrapper, { 
 
             animation: 150,
             // Element dragging ended
@@ -262,10 +267,10 @@ var Form = function(id) {
                     if(draggElFirst || droppElFirst) {
 
                         if(draggElFirst) {
-
+                            
                             sections[draggedIndex].removeDeleteButton();
-                            sections[droppedIndex].addDeleteButton();
-                            sections[droppedIndex].onDelete();
+                            sections[droppedIndex+1].addDeleteButton();
+                            sections[draggedIndex+1].onDelete();
 
                         } else if (droppElFirst) {
 
@@ -283,6 +288,10 @@ var Form = function(id) {
 
         });
 
+    }
+
+    this._initilizeTooltip = function() {
+        $('[data-toggle="tooltip"]').tooltip();
     }
 
     /**
@@ -345,7 +354,7 @@ var Form = function(id) {
          * Loop through all exist section element.
          * Reindex the section via index of the element.
          */
-        sections.forEach(function(section, index, _arr){
+        sections.forEach(function(section, index){
             
             var sectionIndex = index + 1;
             var indexDifferent = (sectionIndex != section.getIndex());

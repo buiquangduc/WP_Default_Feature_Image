@@ -65,12 +65,12 @@ var Section = function(sectionIndex, parentForm) {
          * Check if the Section has a Post Type part.
          *    If yes, Bind on selected feature when user changed the value of the post type.
          */
-        if(typeof postType !== 'undefined') section._onSelectedPostType();
+        if(typeof postType !== 'undefined') { section._onSelectedPostType(); }
         /* 
          * Check if the Section has a Delete Button.
          *    If yes, Bind delete feature when user click on Delete Button.
          */
-        if(typeof deleteButton !== 'undefined') section.onDelete();
+        if(typeof deleteButton !== 'undefined') { section.onDelete(); }
     }
 
     /**
@@ -183,7 +183,7 @@ var Section = function(sectionIndex, parentForm) {
      */
     this._onSelectedPostType = function() {
         /* Bind actions when user select a post type. */
-        postType.selectElement.change(function(e) { 
+        postType.selectElement.change(function() { 
             /* First: Delete related layout. */
             section._deleteLayouts([taxonomies, imageUpload]);
             /* Second: Truncate related variables. */
@@ -271,7 +271,7 @@ var Section = function(sectionIndex, parentForm) {
      * Check if layout exist or not via class name.
      */
     this._checkLayoutExist = function(className) {
-        if(element.find(className).length > 0) return true;
+        if(element.find(className).length > 0) { return true; }
         return false;
     } 
 

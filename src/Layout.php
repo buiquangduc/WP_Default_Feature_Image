@@ -31,7 +31,7 @@ final class Layout {
 	 * @param mixed $options
 	 * @param string $layout_name
 	 * @since 1.0.0
-	 * @return VA\Templater
+	 * @return \VA\Templater
 	 */
 	public function get_admin_layout($tabs, $current_tab, $options, $layout_name) {
 		return \wpdfi()->templater->render('admin.layout',[
@@ -45,7 +45,7 @@ final class Layout {
 	 *
 	 * @param array $taxonomies
 	 * @since 1.0.0
-	 * @return VA\Templater
+	 * @return \VA\Templater
 	 */
 	public function get_taxonomies_layout($taxonomies) {
 		return \wpdfi()->templater->render('admin.blocks.taxonomy.default', ['taxonomies' => $taxonomies]);
@@ -71,7 +71,7 @@ final class Layout {
 	 * @param string $post_type
 	 * @param integer $section_index
 	 * @since 1.0.0
-	 * @return VA\Templater
+	 * @return string $layout
 	 */
 	public function get_related_layout($section_index, $post_type) {
 		$layout = '';
@@ -88,9 +88,4 @@ final class Layout {
 		// ]);
 		return $layout;
 	}
-
-
-
-
-
 }
