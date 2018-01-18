@@ -25,7 +25,7 @@ data-nonce="{{ wp_create_nonce('wpdfi-ajax-nonce') }}">
 	<button id="generate_fimage_button" @if(!$post_types_details) disabled @endif>{{ __('Generate Feature Image with values from "Sections" tab', 'wpdfi') }}</button>
 	<div id="generate_fimage_progressbar"></div>
 </div>
-<div class="generate-fimage-information">
+<p class="description generate-fimage-information">
 	@if($post_types_details)
 		<p>{{ __('Your site has (only include post types which are set from "Sections" tab):', 'wpdfi') }}</p>
 		@foreach($post_types_details as $pt_id => $number_posts_no_fimage)
@@ -35,4 +35,4 @@ data-nonce="{{ wp_create_nonce('wpdfi-ajax-nonce') }}">
 	@else
 		{{ __('There is no post without feature image founded or you need to section a section first.', 'wpdfi') }}
 	@endif
-</div>
+</p>
