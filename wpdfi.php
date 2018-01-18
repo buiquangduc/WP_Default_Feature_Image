@@ -5,9 +5,26 @@
  * Version: 1.0.0
  * Author: Duc Bui Quang <ducbuiquangxd@gmail.com>
  * Author URI: https://www.ducbuiquang.com
- * License: GNUv3
+ * License: GPLv2+
  * Text Domain: wpdfi
- */
+ *
+
+WP Default Feature Image is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+any later version.
+ 
+WP Default Feature Image is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+ 
+You should have received a copy of the GNU General Public License
+along with WP Default Feature Image. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
+
+*/
+
+
 define('WPDFI_PLUGIN', __FILE__ );
 define('WPDFI_PLUGIN_BASENAME', plugin_basename( WPDFI_PLUGIN ) );
 define('WPDFI_URL_BASE', plugin_dir_url( WPDFI_PLUGIN) );
