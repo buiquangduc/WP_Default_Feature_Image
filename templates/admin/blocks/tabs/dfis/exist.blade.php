@@ -1,6 +1,6 @@
-@foreach($options['sections'] as $section_index => $option)
-	<section class="item-option list-group-item" id="item-option-origin-{{ $section_index }}" data-index="{{ $section_index }}">
-		<p class="section-label">Section {{ $section_index }}</p>
+@foreach($options['dfis'] as $dfi_index => $option)
+	<section class="item-option list-group-item" id="item-option-origin-{{ $dfi_index }}" data-index="{{ $dfi_index }}">
+		<p class="dfi-label">DFI {{ $dfi_index }}</p>
 		<!-- Include post type. -->
 		@include('admin.blocks.posttype.exist', [
 			'id' => $option['post_type'], 'text' => wpdfi()->post_type->get_singular_name($option['post_type'])
@@ -19,10 +19,10 @@
 		@include('admin.blocks.imageupload.exist', ['image_id' => $option['image_id'], 'image_source' => $option['image_source']])
 		<!-- Include delete button -->
 		<!-- 
-			Check if this section is not the first section 
+			Check if this dfi is not the first dfi 
 			If yes, include the delete button
 		-->
-		@if($section_index != 1) 
+		@if($dfi_index != 1) 
 			<a href="#" class="btn-remove">-</a>
 		@endif
 		<!-- @include('admin.blocks.imagesize.exist', ['image_size' => $option['image_size']]) -->

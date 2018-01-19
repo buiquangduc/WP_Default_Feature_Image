@@ -3,74 +3,74 @@ import Taxonomy from './taxonomy.js';
 import PostType from './posttype.js';
 import Layout from './layout.js';
 
-var Section = function(sectionIndex, parentForm) {
+var DFI = function(dfiIndex, parentForm) {
 
     /**
-     * section variable is created to represent Section instance.
+     * dfi variable is created to represent DFI instance.
      */
-    var section = this;
+    var dfi = this;
 
     /**
-     * index variable is created to represent Section index.
+     * index variable is created to represent DFI index.
      */
-    var index = sectionIndex;
+    var index = dfiIndex;
 
     /**
-     * id variable is create to represent id of the Section
+     * id variable is create to represent id of the DFI
      */
     var id = '#item-option-origin-' + index;
 
     /**
-     * element variable is created to be a master element of the Section, all the variable will be found via element variable.
+     * element variable is created to be a master element of the DFI, all the variable will be found via element variable.
      */
     var element = $(id);
 
     /**
-     * postType variable is created to represent Post Type part of the Section.
+     * postType variable is created to represent Post Type part of the DFI.
      */
     var postType;
 
     /**
-     * taxonomies variable is created to represent all Taxonomy parts of the Section.
+     * taxonomies variable is created to represent all Taxonomy parts of the DFI.
      */
     var taxonomies;
 
     /**
-     * imageUpload variable is created to represent ImageUpload part of the Section.
+     * imageUpload variable is created to represent ImageUpload part of the DFI.
      */
     var imageUpload;
 
     /**
-     * deleteButton variable is created to represent Delete Buton of the Section.
+     * deleteButton variable is created to represent Delete Buton of the DFI.
      */
     var deleteButton;
 
     /**
-     * errors variable is temporary variable to store all errors of the Section.
+     * errors variable is temporary variable to store all errors of the DFI.
      */ 
     var errors = [];
 
     /** 
-     * layout variable is created to handle all rendering layout stuff for the Section.
+     * layout variable is created to handle all rendering layout stuff for the DFI.
      */
     var layout = new Layout();
 
     /**
-     * Initialize actions when create a instance of the Section.
+     * Initialize actions when create a instance of the DFI.
      */
     this.init = function() {
         /* Assign all exist layout to corresponding variable. */
-        section._checkLayoutAndAssignVariable();
+        dfi._checkLayoutAndAssignVariable();
         /**
-         * Check if the Section has a Post Type part.
+         * Check if the DFI has a Post Type part.
          *    If yes, Bind on selected feature when user changed the value of the post type.
          */
-        if(typeof postType !== 'undefined') { section._onSelectedPostType(); }
+        if(typeof postType !== 'undefined') { dfi._onSelectedPostType(); }
         /* 
-         * Check if the Section has a Delete Button.
+         * Check if the DFI has a Delete Button.
          *    If yes, Bind delete feature when user click on Delete Button.
          */
-        if(typeof deleteButton !== 'undefined') { section.onDelete(); }
+        if(typeof deleteButton !== 'undefined') { dfi.onDelete(); }
     }
 
     /**
@@ -80,14 +80,14 @@ var Section = function(sectionIndex, parentForm) {
         /* First: Check if PostType part exist.
          *    If yes, assign PostType part to postType variable.
          */
-        if(section._checkLayoutExist('.post-type-row')) {
+        if(dfi._checkLayoutExist('.post-type-row')) {
             postType = new PostType(id+' > .post-type-row');
         }
 
         /* Second: Check if Taxonomy parts exist.
          *    If yes, assign Taxonomy part to taxonomies variable.
          */
-        if(section._checkLayoutExist('.taxonomy-row')) {
+        if(dfi._checkLayoutExist('.taxonomy-row')) {
             var _taxonomies = [];
             $(id+' > .taxonomy-row').each(function(index, value){
                 _taxonomies.push(new Taxonomy(value));
@@ -99,20 +99,20 @@ var Section = function(sectionIndex, parentForm) {
         /* Third: Check if ImageUpload part exist.
          *    If yes, assign ImageUpload part to imageUpload variable.
          */
-        if(section._checkLayoutExist('.image-upload-row')) {
+        if(dfi._checkLayoutExist('.image-upload-row')) {
             imageUpload = new ImageUpload(id+' > .image-upload-row');
         }
 
         /* Fourth: Check if Delete Button exist.
          *    If yes, assign deleteButton variable to Delete Button.
          */
-        if(section._checkLayoutExist('.btn-remove')) {
+        if(dfi._checkLayoutExist('.btn-remove')) {
             deleteButton = $(id+' > .btn-remove');
         }
     }
 
     /**
-     * Validate input data of the Section.
+     * Validate input data of the DFI.
      */
     this.validate = function() {
         /**
@@ -122,11 +122,11 @@ var Section = function(sectionIndex, parentForm) {
          *    If PostType value is not exist, store an error in errors variable, then return false.
          */
         if(!postType.getValue()) {
-            section._storeError('Post Type value on Section ' + index + ' must be not empty');
+            dfi._storeError('Post Type value on DFI ' + index + ' must be not empty');
             return false;
         } else {
             if(!imageUpload.getId() || !imageUpload.getSource()) {
-                section._storeError('Uploaded image value on Section ' + index + ' must be not empty');
+                dfi._storeError('Uploaded image value on DFI ' + index + ' must be not empty');
                 return false;
             }
         }
@@ -143,7 +143,7 @@ var Section = function(sectionIndex, parentForm) {
     }
 
     /**
-     * Truncate errors variable to store new errors of the Section.
+     * Truncate errors variable to store new errors of the DFI.
      */
     this.truncateErrors = function() {
     
@@ -152,7 +152,7 @@ var Section = function(sectionIndex, parentForm) {
     }
 
     /**
-     * Return the errors of the Section.
+     * Return the errors of the DFI.
      */
     this.getErrors = function() {
         /* Return the errors variable. */
@@ -165,15 +165,15 @@ var Section = function(sectionIndex, parentForm) {
      */
     this.onDelete = function() {
         deleteButton.click(function(event){
-            /* Delete the section element. */
+            /* Delete the dfi element. */
             event.preventDefault();
             element.slideUp( '300', function() {
                 element.remove();
                 /** 
-                 * Remove section from parent form.
+                 * Remove dfi from parent form.
                  * Note that javascript array index start from 0, so we need to minus 1
                  */
-                parentForm.removeSection(index - 1);
+                parentForm.removeDFI(index - 1);
             });
         });
     }
@@ -185,21 +185,21 @@ var Section = function(sectionIndex, parentForm) {
         /* Bind actions when user select a post type. */
         postType.selectElement.change(function() { 
             /* First: Delete related layout. */
-            section._deleteLayouts([taxonomies, imageUpload]);
+            dfi._deleteLayouts([taxonomies, imageUpload]);
             /* Second: Truncate related variables. */
-            section._truncateVariables(['taxonomies', 'imageUpload']);
+            dfi._truncateVariables(['taxonomies', 'imageUpload']);
             /**
              * Third: 
              *    Check if selected value is not the blank value
              *    If yes:
              *        Get related layout.
-             *        Add layout just received to the bottom of the section.
+             *        Add layout just received to the bottom of the dfi.
              *        Redo checkLayoutAndAssignVariable.
              */
             if(postType.getValue()) {
-                layout.getRelatedSectionLayout(index, postType.getValue())
-                      .done(section._addLayout)
-                      .then(section._checkLayoutAndAssignVariable);
+                layout.getRelatedDFILayout(index, postType.getValue())
+                      .done(dfi._addLayout)
+                      .then(dfi._checkLayoutAndAssignVariable);
             }
         });
     }
@@ -218,14 +218,14 @@ var Section = function(sectionIndex, parentForm) {
     }
 
     /**
-     * Add new layout to the bottom of the Section.
+     * Add new layout to the bottom of the DFI.
      */
     this._addLayout = function(layout) {
         element.append(JSON.parse(layout));
     }
 
     /**
-     * Truncate Section Variables.
+     * Truncate DFI Variables.
      */
     this._truncateVariables = function(variables) {
         /**
@@ -244,7 +244,7 @@ var Section = function(sectionIndex, parentForm) {
     } 
 
     /**
-     * Delete Section Layouts.
+     * Delete DFI Layouts.
      */
     this._deleteLayouts = function(variables) {
 
@@ -276,7 +276,7 @@ var Section = function(sectionIndex, parentForm) {
     } 
 
     /**
-     * Get ID of the section.
+     * Get ID of the dfi.
      */
     this.getId = function() {
 
@@ -285,7 +285,7 @@ var Section = function(sectionIndex, parentForm) {
     }
 
     /**
-     * Get data index of the section.
+     * Get data index of the dfi.
      */
     this.getIndex = function() {
 
@@ -298,7 +298,7 @@ var Section = function(sectionIndex, parentForm) {
      */ 
     this.removeDeleteButton = function() {
 
-        section._removeDeleteButtonEl();
+        dfi._removeDeleteButtonEl();
 
     }
 
@@ -308,7 +308,7 @@ var Section = function(sectionIndex, parentForm) {
     this._removeDeleteButtonEl = function() {
 
         deleteButton.remove();
-        section._truncateVariables(['deleteButton']);
+        dfi._truncateVariables(['deleteButton']);
 
     }
 
@@ -317,17 +317,18 @@ var Section = function(sectionIndex, parentForm) {
      */
     this.addDeleteButton = function() {
 
-        section._addDeleteButtonEl();
-        section._updateDeleteButtonVar();
+        dfi._addDeleteButtonEl();
+        dfi._updateDeleteButtonVar();
 
     }
 
     /**
-     * Add new delete button element to the section.
+     * Add new delete button element to the dfi.
      */
     this._addDeleteButtonEl = function() {
 
         var newDeleteButton = layout.getDeleteButtonLayout();
+        console.log(newDeleteButton);
         element.append(newDeleteButton);
 
     }
@@ -344,19 +345,19 @@ var Section = function(sectionIndex, parentForm) {
     this.reindex = function(newIndex) {
         var oldIndex = index;
         index = newIndex;
-        section._updateID();
-        section._updateElement();
-        section._updateDataIndex();
-        section._updateInput(oldIndex, newIndex);
-        section._updateSelect(oldIndex, newIndex);
-        section._updateLabel();
-        section._truncateVariables(['postType', 'taxonomies', 'imageUpload', 'deleteButton']);
-        section._checkLayoutAndAssignVariable();
+        dfi._updateID();
+        dfi._updateElement();
+        dfi._updateDataIndex();
+        dfi._updateInput(oldIndex, newIndex);
+        dfi._updateSelect(oldIndex, newIndex);
+        dfi._updateLabel();
+        dfi._truncateVariables(['postType', 'taxonomies', 'imageUpload', 'deleteButton']);
+        dfi._checkLayoutAndAssignVariable();
 
     }
 
     /**
-     * Update ID of the section.
+     * Update ID of the dfi.
      */
     this._updateID = function() {
 
@@ -365,7 +366,7 @@ var Section = function(sectionIndex, parentForm) {
     }
 
     /**
-     * Update Element of the section.
+     * Update Element of the dfi.
      */
     this._updateElement = function() {
         var idVal = id.replace('#', '');
@@ -375,7 +376,7 @@ var Section = function(sectionIndex, parentForm) {
     }
 
     /**
-     * Update attribute data-index of the section.
+     * Update attribute data-index of the dfi.
      */
     this._updateDataIndex = function() {
 
@@ -384,7 +385,7 @@ var Section = function(sectionIndex, parentForm) {
     }
 
     /**
-     * Reindex input of the section. 
+     * Reindex input of the dfi. 
      */
     this._updateInput = function(oldIndex, newIndex) {
 
@@ -404,7 +405,7 @@ var Section = function(sectionIndex, parentForm) {
     }
 
     /**
-     * Reindex select input of the section. 
+     * Reindex select input of the dfi. 
      */
     this._updateSelect = function(oldIndex, newIndex) {
 
@@ -424,18 +425,18 @@ var Section = function(sectionIndex, parentForm) {
     };
 
     /**
-     * Update section label with new index.
+     * Update dfi label with new index.
      */
     this._updateLabel = function() {
-        var labelClass = '.section-label';
+        var labelClass = '.dfi-label';
         var label = element.find(labelClass);
         /* Remove current label. */
         label.empty();
         /* Update new label. */ 
-        label.text('Section ' + index);
+        label.text('DFI ' + index);
 
     }
 }
 
-export default Section;
+export default DFI;
 

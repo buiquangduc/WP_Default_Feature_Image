@@ -46,12 +46,12 @@ final class Ajax
 	 * @return void
 	 */
 	public function get_related_layout() {
-		echo json_encode(\wpdfi()->layout->get_related_layout($_POST['section_index'], $_POST['post_type']));
+		echo json_encode(\wpdfi()->layout->get_related_layout($_POST['dfi_index'], $_POST['post_type']));
 		exit;
 	}
 
 	/**
-	 * Get default layout of single section in admin
+	 * Get default layout of single dfi in admin
 	 *
 	 * @since 1.0.0
 	 * @return void

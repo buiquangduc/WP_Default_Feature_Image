@@ -48,7 +48,7 @@ final class PostType
 	public function add_default_feature_image($post_id, $post_after, $post_before) {
 		/* Get the Admin Setting for option 'status_for_update', this option will has a value like publish, pending,... */
 		$status_for_update = \wpdfi()->admin->get_option('options', 'status_for_update');
-
+		if($status_for_update) $status_for_update = 'publish';
 		/**
 		 * Check the post-after-updated (pau).
 		 * If the pau does not have a feature image.
@@ -77,7 +77,7 @@ final class PostType
 		$terms = $this->get_all_terms_post($post_id, $post_type);
 		
 		/* Get main Admin Setting */
-		$options = \wpdfi()->admin->get_option('sections');
+		$options = \wpdfi()->admin->get_option('dfis');
 
 		/* Loop through main Admin Setting to compare with post's data. */
 		$conditional_status = false; 
@@ -214,17 +214,17 @@ final class PostType
 	 * Get post types follow settings value.
 	 *
 	 * @since 1.0.0
-	 * @return array $pt_fl_sections
+	 * @return array $pt_fl_dfis
 	 */
 	protected function _get_pt_fl_settings() {
 
 		$pt_fl_settings = [];
-		$sections_values = \wpdfi()->admin->get_option('sections');
-		if($sections_values) {
-			foreach($sections_values as $section_values) {
+		$dfis_values = \wpdfi()->admin->get_option('dfis');
+		if($dfis_values) {
+			foreach($dfis_values as $dfi_values) {
 				/* Only insert new value if there current value is not exist yet. */
-				if(!in_array($section_values['post_type'], $pt_fl_settings)) {
-					$pt_fl_settings[] = $section_values['post_type'];
+				if(!in_array($dfi_values['post_type'], $pt_fl_settings)) {
+					$pt_fl_settings[] = $dfi_values['post_type'];
 				} 
 			}
 		}
@@ -259,7 +259,7 @@ final class PostType
 	 * Detail is how many number of posts from this post type which do not have feature image.
 	 *
 	 * @since 1.0.0
-	 * @return array $pt_details_fl_settings
+	 * @return array $pt_details_fl_settings.
 	 */
 	public function get_pt_details_fl_settings() {
 		$post_types = $this->_get_pt_fl_settings();
@@ -275,6 +275,12 @@ final class PostType
 		return $pt_details_fl_settings;
 	}
 
+	/**
+	 * Return list of post ids without feature image.
+	 * 
+	 * @since 1.0.0
+	 * @return array $ids.
+	 */
 	public function get_posts_no_fimage_id() {
 		$post_types = $this->_get_pt_fl_settings();
 		$qr_posts_no_fimage = get_posts( $this->_get_args_posts_no_fimage($post_types) );
