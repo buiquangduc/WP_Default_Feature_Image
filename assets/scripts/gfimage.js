@@ -29,6 +29,9 @@ var GFImage = function() {
 		gFImage._onClickGButton();
 	}	
 
+	/**
+	 * Initialize progress bar.
+	 */
 	this._progressBarInit = function() {
 		var ProgressBar = require('progressbar.js');
 		progressBar = new ProgressBar.Line(progressBarID, {
@@ -36,6 +39,9 @@ var GFImage = function() {
 	    });
 	}
 
+	/** 
+	 * Actions after generate button is clicked.
+	 */
 	this._onClickGButton = function() {
 		generateButton.click(function(event){
 			event.preventDefault();
@@ -47,6 +53,9 @@ var GFImage = function() {
 		});
 	}
 
+	/**
+	 * Enable, disable a list of buttons.
+	 */
 	this._toggleButton = function(arrayElement, status) {
 		arrayElement.forEach(function(el){
 			switch(status) {
@@ -62,6 +71,9 @@ var GFImage = function() {
 		});
 	}
 
+	/**
+	 * Regenerate feature image for a post.
+	 */
 	this._ajaxUpdateFImage = function(postId) {
 		$.ajax({
             url: '/wp-admin/admin-ajax.php?action=wpdfi_generate_feature_image',
@@ -82,6 +94,9 @@ var GFImage = function() {
         })
 	}
 
+	/**
+	 * Update the progress bar. Progress bar will be 100% if all the posts are regenerated feature image.
+	 */
 	this._updateProgressBar = function(arrayIndex) {
 		/* Javascript array index start at 0, so we need to plus 1 to get the correct value for divide purpose. */
 		var realIndex = arrayIndex + 1;
@@ -91,6 +106,9 @@ var GFImage = function() {
 		progressBar.setText(currentPercentText);
 	}
 
+	/**
+	 * Check if there is a post which is not regenerated feature image yet.
+	 */
 	this._continueAjax = function(arrayIndex) {
 		/* Javascript array index start at 0, so we need to minus 1 from total posts to get the last index. */
 		var lastIndex = totalPostNoFImage - 1;
@@ -98,9 +116,21 @@ var GFImage = function() {
 		/* If the current index is not the last index, continue run Ajax request on the next index. */
 		if(!isLastIndex) {
 			gFImage._ajaxUpdateFImage(postNoFImageIds[arrayIndex + 1]);
+		/* If the current index is the last index, enable save button. */
+		} else {
+
+			gFImage._updateLogAfterAjax({
+				status: 'complete',
+				text: 'Complete!'
+			});
+			gFImage._toggleButton([saveButton], 'enable');
+
 		}
 	}
 
+	/**
+	 * Update log message after the generate button is clicked.
+	 */
 	this._updateLogAfterAjax = function(response) {
 		switch(response.status) {
     		case true:
@@ -109,13 +139,19 @@ var GFImage = function() {
     		case false:
     			informationWrapper.append('<p>' + response.namePT + ' with ID ' + response.postId +' because conditions are not match.</p>');
     			break;
+    		case 'complete':
+    			informationWrapper.append('<p>' + response.text + '</p>');
+    			break;
     		default:
     			informationWrapper.append('<p>' + response.namePT + ' with ID ' + response.postId +' has something wrong!</p>');
     	}
 	}
 
+	/**
+	 * Display alert box whenever the generate button is clicked.
+	 */
 	this._warning = function() {
-		var warningText = 'Are you sure you want to generate all feature image with the values in the "Sections" tab? Make sure to backup your database before click "OK".';
+		var warningText = 'Are you sure you want to generate all feature image with the values in the "DFIs" tab? Make sure to backup your database before click "OK".';
 		return confirm(warningText);
 	}
 
