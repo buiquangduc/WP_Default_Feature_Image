@@ -13,7 +13,7 @@ git checkout -b production
 # Running build script
 bash build.sh
 # Remove development stuff
-git rm -f --cached assets build.sh composer.json composer.lock node_modules package-lock.json package.json storage webpack.config.js yarn.lock
+git rm -rf --cached assets build.sh composer.json composer.lock node_modules package-lock.json package.json storage webpack.config.js yarn.lock
 # Commit and push to production branch
 git add .
 git commit -m ":tada: Production version $1 $(date)"
