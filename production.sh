@@ -16,8 +16,8 @@ bash build.sh
 git rm -rf --cached assets build.sh composer.json composer.lock node_modules package-lock.json package.json storage webpack.config.js yarn.lock
 # Commit and push to production branch
 git add .
-/git commit -m ":tada: Production version $1 $(date)"
-git push https://github.com/buiquangduc/WP_Default_Feature_Image.git product
+git commit -m ":tada: Production version $1 $(date)"
+git push https://github.com/buiquangduc/WP_Default_Feature_Image.git production
 # Checkout to master branch
 git checkout master
 
