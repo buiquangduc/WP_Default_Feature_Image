@@ -26,6 +26,17 @@ Follow these steps to install and use the plugin:
 - Activate the plugin through the `Plugins` screen in WordPress.
 - Go to the `Settings -> WPDFI` screen and configure the plugin.
 
+== Screenshots ==
+1. This plugin's settings is located at Settings -> WPDFI.
+2. There are 2 tabs on this plugin's settings page. The first tab is 'DFIs', this is the place where you can set your default feature images for any post types and taxonomies. You can drag to reorder the DFI values.
+3. 'Add new DFI' button is located in the bottom of this tab.
+4. 'Options' tab is the place where you can set 'Status of a post to add default feature image' and 'Generate Feature Image with values from DFIs tab'.
+5. Example: You set a new DFI value in 'DFIs' tab.
+6. You set 'Status of a post to add default feature image' to publish.
+7. You add new page, then publish.
+8. The new page you've added before now have a default feature image (If the new page does not have a feature image).
+9. 'Generating default feature images' help you to automatically setup your default feature images (in 'DFIs' tab) for your existing posts. 
+
 == Frequently Asked Questions ==
 = Where can I contribute my code or idea? =
 
