@@ -1,5 +1,4 @@
 import styles from './wpdfi.scss';
-import bootstrap from 'bootstrap';
 import Form from './scripts/form.js';
 import GFImage from './scripts/gfimage.js';
 

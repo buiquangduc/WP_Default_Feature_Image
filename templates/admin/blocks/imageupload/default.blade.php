@@ -6,8 +6,8 @@
 		<input type="button" class="upload-btn" value="Upload Image">
 		<div class="wrapper-image" style="display: none;">
 			<img class="image" style="width: 150px"></img>
-			<input type="hidden" name="sections[{{ $section_index }}][image_id]" class="image-input-id">
-			<input type="hidden" name="sections[{{ $section_index }}][image_source]" class="image-input-source">
+			<input type="hidden" name="dfis[{{ $dfi_index }}][image_id]" class="image-input-id">
+			<input type="hidden" name="dfis[{{ $dfi_index }}][image_source]" class="image-input-source">
 		</div>
 	</div>
 </div>

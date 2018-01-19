@@ -52,16 +52,16 @@ final class Layout {
 	}
 
 	/**
-	 * Get default layout of single section in admin
+	 * Get default layout of single dfi in admin
 	 *
-	 * @param integer $section_index
+	 * @param integer $dfi_index
 	 * @param boolean $include_delete
 	 * @since 1.0.0
 	 * @return VA\Templater
 	 */
-	public function get_default_layout($section_index, $include_delete) {
-		return \wpdfi()->templater->render('admin.blocks.tabs.sections.default', [
-			'section_index' => $section_index, 'include_delete' => $include_delete
+	public function get_default_layout($dfi_index, $include_delete) {
+		return \wpdfi()->templater->render('admin.blocks.tabs.dfis.default', [
+			'dfi_index' => $dfi_index, 'include_delete' => $include_delete
 		]);
 	}
 
@@ -69,19 +69,19 @@ final class Layout {
 	 * Get related layout with post type value, related layout include taxonomies, image upload and image size
 	 *
 	 * @param string $post_type
-	 * @param integer $section_index
+	 * @param integer $dfi_index
 	 * @since 1.0.0
 	 * @return string $layout
 	 */
-	public function get_related_layout($section_index, $post_type) {
+	public function get_related_layout($dfi_index, $post_type) {
 		$layout = '';
 		/* Get taxonomy layout */
 		$layout.= \wpdfi()->templater->render('admin.blocks.taxonomy.default', [
 			'taxonomies' => \wpdfi()->taxonomy->get($post_type),
-			'section_index' => $section_index
+			'dfi_index' => $dfi_index
 		]);
 		$layout.= \wpdfi()->templater->render('admin.blocks.imageupload.default', [
-			'section_index' => $section_index
+			'dfi_index' => $dfi_index
 		]);
 		// $layout.= \wpdfi()->templater->render('admin.blocks.imagesize.default', [
 		// 	'sizes' => \wpdfi()->image->get_size_names_and_dimensions()

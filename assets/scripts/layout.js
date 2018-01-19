@@ -1,9 +1,9 @@
 var Layout = function() {
 
 	/**
-     * Get default section layout.
+     * Get default dfi layout.
      */
-    this.getDefaultSectionLayout = function(index) {
+    this.getDefaultDFILayout = function(index) {
         return $.ajax({
             url: '/wp-admin/admin-ajax.php?action=wpdfi_get_default_layout',
             method: 'POST',
@@ -15,14 +15,14 @@ var Layout = function() {
     }
 
     /**
-     * Get related layout of a section, related layout include taxonomies, image upload and image size.
+     * Get related layout of a dfi, related layout include taxonomies, image upload and image size.
      */
-    this.getRelatedSectionLayout = function(sectionIndex, postType) {
+    this.getRelatedDFILayout = function(dfiIndex, postType) {
         return $.ajax({
             url: '/wp-admin/admin-ajax.php?action=wpdfi_get_related_layout',
             method: 'POST',
             data: {
-                section_index: sectionIndex,
+                dfi_index: dfiIndex,
                 post_type: postType
             },
         })

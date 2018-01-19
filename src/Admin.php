@@ -77,7 +77,7 @@ final class Admin
 	 */
 	private function _get_tabs() {
 		return [ 
-			'sections'		=> 'Sections',
+			'dfis'		=> 'DFIs',
 			'options'		=> 'Options'
 		];
 	}
@@ -99,7 +99,7 @@ final class Admin
 	 * @return string
 	 */
 	private function _get_default_tab() {
-		return 'sections';
+		return 'dfis';
 	}
 
 	/**

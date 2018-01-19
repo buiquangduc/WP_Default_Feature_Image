@@ -1,6 +1,6 @@
-@import '../node_modules/select2/dist/css/select2.min.css';
-@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-@import '../node_modules/font-awesome/css/font-awesome.min.css';
+@import './styles/libs/font-awesome.css';
+@import './styles/libs/select2.min.css';
+@import './styles/libs/bootstrap.min.css';
 
 body {
 	background: #f1f1f1;
@@ -71,7 +71,7 @@ body {
 	border: 1px solid #ddd;
 	position: relative;
 	margin-bottom: 15px;
-	.section-label {
+	.dfi-label {
 		margin: 0;
 		padding: 10px;
 		font-weight: 600;
@@ -168,7 +168,6 @@ body {
 			padding: 5px 17px;
 		}
 		.wrapper-image {
-			display: none;
 			margin-top: 20px;
 		}
 	}
