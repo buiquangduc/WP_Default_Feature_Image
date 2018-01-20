@@ -283,11 +283,14 @@ final class PostType
 	 */
 	public function get_posts_no_fimage_id() {
 		$post_types = $this->_get_pt_fl_settings();
-		$qr_posts_no_fimage = get_posts( $this->_get_args_posts_no_fimage($post_types) );
 		$ids = [];
-		foreach($qr_posts_no_fimage as $post) {
-			$ids[] = $post->ID;
-		}  
+		if($post_types) {
+			$qr_posts_no_fimage = get_posts( $this->_get_args_posts_no_fimage($post_types) );
+		
+			foreach($qr_posts_no_fimage as $post) {
+				$ids[] = $post->ID;
+			}
+		} 
 		return $ids;
 	}
 }
