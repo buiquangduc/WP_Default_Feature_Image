@@ -16,6 +16,8 @@ var GFImage = function() {
 
 	var informationWrapper = $('.generate-fimage-information');
 
+	var resultWrapper = $('.generate-fimage-result');
+
 	var progressBarID = '#generate_fimage_progressbar';
 
 	var progressBar;
@@ -134,16 +136,16 @@ var GFImage = function() {
 	this._updateLogAfterAjax = function(response) {
 		switch(response.status) {
     		case true:
-    			informationWrapper.append('<p>' + response.namePT + ' with ID ' + response.postId +' is updated feature image successfully</p>');
+    			resultWrapper.prepend('<p>' + response.namePT + ' with ID ' + response.postId +' is updated feature image successfully</p>');
     			break;
     		case false:
-    			informationWrapper.append('<p>' + response.namePT + ' with ID ' + response.postId +' because conditions are not match.</p>');
+    			resultWrapper.prepend('<p>' + response.namePT + ' with ID ' + response.postId +' because conditions are not match.</p>');
     			break;
     		case 'complete':
-    			informationWrapper.append('<p>' + response.text + '</p>');
+    			resultWrapper.append('<p>' + response.text + '</p>');
     			break;
     		default:
-    			informationWrapper.append('<p>' + response.namePT + ' with ID ' + response.postId +' has something wrong!</p>');
+    			resultWrapper.prepend('<p>' + response.namePT + ' with ID ' + response.postId +' has something wrong!</p>');
     	}
 	}
 

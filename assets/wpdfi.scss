@@ -172,3 +172,34 @@ body {
 		}
 	}
 }
+
+.progress-wrapper {
+	margin: 15px 0;
+	background: #E9ECEF;
+	border-radius: 4px;
+	box-shadow: 0 0 5px #c6c6c6 inset;
+	height: 16px;
+	overflow: hidden;
+	> svg {
+		height: 16px;
+		path {
+			stroke: #28A745;
+		}
+	}
+	.progressbar-text {
+		color: #000 !important;
+	}
+}
+
+.generate-fimage-result {
+	border-top: 1px solid #dfdfdf;
+	padding-top: 10px;
+	margin-top: 20px;
+}
+
+.option-wrapper {
+	margin-bottom: 30px;
+	label {
+		margin-right: 15px;
+	}
+}
